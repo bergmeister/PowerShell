@@ -174,4 +174,7 @@
   <data name="TypeNotSupported" xml:space="preserve">
     <value>'{0}' is not supported in this system.</value>
   </data>
+  <data name="InvalidCharacter" xml:space="preserve">
+    <value>'{0}' contains at least one invalid character.</value>
+  </data>
 </root>
