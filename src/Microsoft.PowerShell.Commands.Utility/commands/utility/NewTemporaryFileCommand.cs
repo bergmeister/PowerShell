@@ -22,6 +22,12 @@ namespace Microsoft.PowerShell.Commands
         public string Extension { get; set; } = ".tmp";
 
         /// <summary>
+        /// Use a Guid as a file name to allow for more than 65,535 unique file names in the temporary folder.
+        /// </summary>
+        [Parameter()]
+        public SwitchParameter GuidBasedName { get; set; }
+
+        /// <summary>
         /// Returns a TemporaryFile.
         /// </summary>
         protected override void EndProcessing()
@@ -31,10 +37,12 @@ namespace Microsoft.PowerShell.Commands
             {
                 WriteError(
                     new ErrorRecord(
-                        new ArgumentException(StringUtil.Format(UtilityCommonStrings.InvalidCharacter, Extension)),
-                            "NewTemporaryInvalidArgument",
-                            ErrorCategory.InvalidArgument,
-                            Extension));
+                        new ArgumentException(
+                                StringUtil.Format(UtilityCommonStrings.InvalidCharacterInParameter,
+                                    nameof(Extension), Extension)),
+                        "NewTemporaryInvalidArgument",
+                        ErrorCategory.InvalidArgument,
+                        Extension));
                 return;
             }
 
@@ -51,7 +59,15 @@ namespace Microsoft.PowerShell.Commands
                 {
                     try
                     {
-                        string fileName = Path.GetRandomFileName();
+                        string fileName;
+                        if (GuidBasedName.IsPresent)
+                        {
+                            fileName = Guid.NewGuid().ToString();
+                        }
+                        else
+                        {
+                            fileName = Path.GetRandomFileName();
+                        }
                         fileName = Path.ChangeExtension(fileName, Extension);
                         filePath = Path.Combine(tempPath, fileName);
                         using (new FileStream(filePath, FileMode.CreateNew)) { }
@@ -78,7 +94,7 @@ namespace Microsoft.PowerShell.Commands
                 {
                     WriteError(
                         new ErrorRecord(
-                            new IOException("Could not find an available temporary file name in {tempPath}."),
+                            new IOException(StringUtil.Format(UtilityCommonStrings.CouldNotFindTemporaryFilename, tempPath)),
                                 "NewTemporaryFileResourceUnavailable",
                                 ErrorCategory.ResourceUnavailable,
                                 tempPath));
