@@ -66,7 +66,7 @@ Describe "NewTemporaryFile" -Tags "CI" {
         {
             Test-Path $tempFile | Should be $true
             $tempFile | Should BeOfType System.IO.FileInfo
-            $tempFile.Name -as [Guid] | Should BeOfType Guid
+            $tempFile.BaseName -as [Guid] | Should BeOfType Guid
             $tempFile.Extension = '.tmp'
         }
         finally
@@ -83,7 +83,7 @@ Describe "NewTemporaryFile" -Tags "CI" {
         {
             Test-Path $tempFile | Should be $true
             $tempFile | Should BeOfType System.IO.FileInfo
-            $tempFile.Name -as [Guid] | Should BeOfType Guid
+            $tempFile.BaseName -as [Guid] | Should BeOfType Guid
             $tempFile.Extension = $expectedExtension
         }
         finally
