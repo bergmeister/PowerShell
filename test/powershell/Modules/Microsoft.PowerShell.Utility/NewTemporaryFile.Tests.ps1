@@ -48,7 +48,7 @@ Describe "NewTemporaryFile" -Tags "CI" {
         $invalidFileNameChars = [System.IO.Path]::GetInvalidFileNameChars()
         foreach($invalidFileNameChar in $invalidFileNameChars)
         {
-            { New-TemporaryFile -Extension $invalidFileNameChar -ErrorAction Stop } | Should BeErrorId "NewTemporaryInvalidArgument,Microsoft.PowerShell.Commands.NewTemporaryFileCommand"
+            { New-TemporaryFile -Extension $invalidFileNameChar -ErrorAction Stop } | ShouldBeErrorId "NewTemporaryInvalidArgument,Microsoft.PowerShell.Commands.NewTemporaryFileCommand"
         }
     }
 
