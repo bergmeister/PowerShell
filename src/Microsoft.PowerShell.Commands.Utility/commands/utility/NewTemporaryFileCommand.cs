@@ -60,7 +60,7 @@ namespace Microsoft.PowerShell.Commands
                         // If this is successful then we will always be able to return it to the user and therefore do not need to remove it.
                         using (new FileStream(filePath, FileMode.CreateNew)) { }
                         creationOfFileSuccessful = true;
-                        WriteVerbose("Created temporary file {filePath}.");
+                        WriteVerbose($"Created temporary file {filePath}.");
                     }
                     catch (IOException) // file already exists -> retry
                     {
