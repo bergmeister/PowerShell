@@ -22,18 +22,12 @@ namespace Microsoft.PowerShell.Commands
         public string Extension { get; set; } = ".tmp";
 
         /// <summary>
-        /// Use a Guid as a file name to allow for more than 65,535 unique file names in the temporary folder.
-        /// </summary>
-        [Parameter()]
-        public SwitchParameter GuidBasedName { get; set; }
-
-        /// <summary>
         /// Returns a TemporaryFile.
         /// </summary>
         protected override void EndProcessing()
         {
             // Check for invalid characters in extension
-            if (!string.IsNullOrEmpty(Extension) && Extension.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+            if (Extension.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
             {
                 WriteError(
                     new ErrorRecord(
@@ -57,19 +51,13 @@ namespace Microsoft.PowerShell.Commands
                 // In case the random temporary file already exists, retry 
                 while (attempts++ < 10 && !creationOfFileSuccessful)
                 {
+                    string fileName = Path.GetRandomFileName();
                     try
-                    {
-                        string fileName;
-                        if (GuidBasedName.IsPresent)
-                        {
-                            fileName = Guid.NewGuid().ToString();
-                        }
-                        else
-                        {
-                            fileName = Path.GetRandomFileName();
-                        }
+                    {                     
                         fileName = Path.ChangeExtension(fileName, Extension);
                         filePath = Path.Combine(tempPath, fileName);
+                        // Try to create the temporary file.
+                        // If this is successful then we will always be able to return it to the user and therefore do not need to remove it.
                         using (new FileStream(filePath, FileMode.CreateNew)) { }
                         creationOfFileSuccessful = true;
                         WriteVerbose("Created temporary file {filePath}.");

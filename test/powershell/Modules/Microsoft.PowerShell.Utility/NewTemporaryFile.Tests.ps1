@@ -6,105 +6,49 @@
 <#
     Purpose:
         Verify that New-TemporaryFile creates a temporary file.
+        It has options to change the default extension '.tmp' and a switch to use a Guid as a name.
 
     Action:
-        Run New-TemporaryFile.
+        Run New-TemporaryFile with different combinations of parameters
 
     Expected Result:
-        A FileInfo object for the temporary file is returned.
+        A FileInfo object for the temporary file is returned and the temporary file gets created.
 #>
 
 Describe "NewTemporaryFile" -Tags "CI" {
+    $defaultTemporaryFileExtension = '.tmp'
+
+    AfterEach {
+        Remove-Item $script:tempFile -ErrorAction SilentlyContinue -Force # variable needs script scope because it gets defined in It block
+    }
 
     It "creates a new temporary file" {
-        $tempFile = New-TemporaryFile
-        try
-        {
-            
-            Test-Path $tempFile | Should be $true
-            $tempFile | Should BeOfType System.IO.FileInfo
-            $tempFile.Extension | Should be '.tmp'
-        }
-        finally
-        {
-            Remove-Item $tempFile -ErrorAction SilentlyContinue -Force
-        }
+        $script:tempFile = New-TemporaryFile
+        $tempFile | Should Exist
+        $tempFile | Should BeOfType System.IO.FileInfo
+        $tempFile.Extension | Should be $defaultTemporaryFileExtension
     }
 
-    It "creates a new temporary file with a specific extension using the -Extension parameter" {
+    It "creates a new temporary file with a specific extension using the -Extension parameter '.csv'" {
         $expectedExtension = '.csv'
         
-        $tempFile = New-TemporaryFile -Extension $expectedExtension
-        try
-        {
-            
-            Test-Path $tempFile | Should be $true
+        $script:tempFile = New-TemporaryFile -Extension $expectedExtension
+            $tempFile | Should Exist
             $tempFile | Should BeOfType System.IO.FileInfo
             $tempFile.Extension | Should be $expectedExtension
-        }
-        finally
-        {
-            Remove-Item $tempFile -ErrorAction SilentlyContinue -Force
-        }
 
-        $tempFile = New-TemporaryFile 'csv' # check that one can also omit the period and parameter name
-        try
-        {
-            Test-Path $tempFile | Should be $true
+        $script:tempFile = New-TemporaryFile 'csv' # check that one can also omit the period and parameter name
+
+            $tempFile | Should Exist
             $tempFile | Should BeOfType System.IO.FileInfo
             $tempFile.Extension | Should be $expectedExtension
-        }
-        finally
-        {
-            Remove-Item $tempFile -ErrorAction SilentlyContinue -Force
-        }
-    }
-
-    It "creates a new temporary file with the name being a Guid using -GuidBasedName switch" {        
-        $tempFile = New-TemporaryFile -GuidBasedName
-        try
-        {
-            Test-Path $tempFile | Should be $true
-            $tempFile | Should BeOfType System.IO.FileInfo
-            $tempFile.BaseName -as [Guid] | Should BeOfType Guid
-            $tempFile.Extension = '.tmp'
-        }
-        finally
-        {
-            Remove-Item $tempFile -ErrorAction SilentlyContinue -Force
-        }
-    }
-
-    It "creates a new temporary file with -Extension and -GuidBasedName switch" {        
-        $expectedExtension = '.csv'
-        
-        $tempFile = New-TemporaryFile -Extension '.csv' -GuidBasedName
-        try
-        {
-            Test-Path $tempFile | Should be $true
-            $tempFile | Should BeOfType System.IO.FileInfo
-            $tempFile.BaseName -as [Guid] | Should BeOfType Guid
-            $tempFile.Extension = $expectedExtension
-        }
-        finally
-        {
-            Remove-Item $tempFile -ErrorAction SilentlyContinue -Force
-        }
     }
 
     It "New-TemporaryItem with an an invalid character in the -Extension parameter should throw NewTemporaryInvalidArgument error" {
         $invalidFileNameChars = [System.IO.Path]::GetInvalidFileNameChars()
         foreach($invalidFileNameChar in $invalidFileNameChars)
         {
-            try
-            {
-                New-TemporaryFile -Extension $invalidFileNameChar -ErrorAction Stop
-                throw "No Exception!"
-            }
-            catch
-            {
-                $_.FullyQualifiedErrorId | Should Be "NewTemporaryInvalidArgument,Microsoft.PowerShell.Commands.NewTemporaryFileCommand"
-            }
+            { New-TemporaryFile -Extension $invalidFileNameChar -ErrorAction Stop } | Should BeErrorId "NewTemporaryInvalidArgument,Microsoft.PowerShell.Commands.NewTemporaryFileCommand"
         }
     }
 
@@ -115,4 +59,5 @@ Describe "NewTemporaryFile" -Tags "CI" {
     It "has an OutputType of System.IO.FileInfo" {
         (Get-Command New-TemporaryFile).OutputType | Should Be "System.IO.FileInfo"
     }
+
 }
