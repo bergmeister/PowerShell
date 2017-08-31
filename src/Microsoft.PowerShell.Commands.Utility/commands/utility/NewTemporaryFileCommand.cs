@@ -14,12 +14,14 @@ namespace Microsoft.PowerShell.Commands
     [OutputType(typeof(System.IO.FileInfo))]
     public class NewTemporaryFileCommand : Cmdlet
     {
+        private const string defaultExtension = ".tmp";
+
         /// <summary>
         /// Specify a different file extension other than the default one, which is '.tmp'. The period in this parameter is optional.
         /// </summary>
         [Parameter(Position = 0)]
         [ValidateNotNullOrEmpty]
-        public string Extension { get; set; } = ".tmp";
+        public string Extension { get; set; } = defaultExtension;
 
         /// <summary>
         /// Returns a TemporaryFile.
@@ -51,14 +53,14 @@ namespace Microsoft.PowerShell.Commands
                 // In case the random temporary file already exists, retry 
                 while (attempts++ < 10 && !creationOfFileSuccessful)
                 {
-                    string temporaryFile;
+                    string temporaryFile = null;
                     try
-                    {                     
+                    {
                         temporaryFile = Path.GetTempFileName(); // this already creates the temporary file
-                        if (this.Extension)
+                        if (Extension != defaultExtension)
                         {
                             // rename file
-                            temporaryFileWithCustomExtension = Path.ChangeExtension(fileName, Extension);
+                            var temporaryFileWithCustomExtension = Path.ChangeExtension(temporaryFile, Extension);
                             File.Move(temporaryFile, temporaryFileWithCustomExtension);
                         }
                         creationOfFileSuccessful = true;
@@ -66,8 +68,11 @@ namespace Microsoft.PowerShell.Commands
                     }
                     catch (IOException) // file already exists -> retry
                     {
-                        attempts++;
-                        File.Delete(temporaryFile);
+                        attempts++;]
+                        if (temporaryFile != null)
+                        {
+                            File.Delete(temporaryFile);
+                        }
                     }
                     catch (Exception exception) // fatal error, which could be e.g. insufficient permissions, etc.
                     {
