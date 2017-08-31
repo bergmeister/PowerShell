@@ -42,7 +42,7 @@ namespace Microsoft.PowerShell.Commands
                 return;
             }
 
-            string filePath = null;
+            string temporaryFilePath = null;
             string tempPath = Path.GetTempPath();
 
             if (ShouldProcess(tempPath))
@@ -53,25 +53,25 @@ namespace Microsoft.PowerShell.Commands
                 // In case the random temporary file already exists, retry 
                 while (attempts++ < 10 && !creationOfFileSuccessful)
                 {
-                    string temporaryFile = null;
                     try
                     {
-                        temporaryFile = Path.GetTempFileName(); // this already creates the temporary file
+                        temporaryFilePath = Path.GetTempFileName(); // this already creates the temporary file
                         if (Extension != defaultExtension)
                         {
                             // rename file
-                            var temporaryFileWithCustomExtension = Path.ChangeExtension(temporaryFile, Extension);
-                            File.Move(temporaryFile, temporaryFileWithCustomExtension);
+                            var temporaryFileWithCustomExtension = Path.ChangeExtension(temporaryFilePath, Extension);
+                            File.Move(temporaryFilePath, temporaryFileWithCustomExtension);
+                            temporaryFilePath = temporaryFileWithCustomExtension;
                         }
                         creationOfFileSuccessful = true;
-                        WriteVerbose($"Created temporary file {filePath}.");
+                        WriteVerbose($"Created temporary file {temporaryFilePath}.");
                     }
                     catch (IOException) // file already exists -> retry
                     {
                         attempts++;
-                        if (temporaryFile != null)
+                        if (temporaryFilePath != null)
                         {
-                            File.Delete(temporaryFile);
+                            File.Delete(temporaryFilePath);
                         }
                     }
                     catch (Exception exception) // fatal error, which could be e.g. insufficient permissions, etc.
@@ -97,7 +97,7 @@ namespace Microsoft.PowerShell.Commands
                     return;
                 }
 
-                FileInfo file = new FileInfo(temporaryFile);
+                FileInfo file = new FileInfo(temporaryFilePath);
                 WriteObject(file);
             }
         }
