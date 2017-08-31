@@ -68,7 +68,7 @@ namespace Microsoft.PowerShell.Commands
                     }
                     catch (IOException) // file already exists -> retry
                     {
-                        attempts++;]
+                        attempts++;
                         if (temporaryFile != null)
                         {
                             File.Delete(temporaryFile);
