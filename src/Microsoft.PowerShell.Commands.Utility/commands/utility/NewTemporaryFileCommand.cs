@@ -97,7 +97,7 @@ namespace Microsoft.PowerShell.Commands
                     return;
                 }
 
-                FileInfo file = new FileInfo(filePath);
+                FileInfo file = new FileInfo(temporaryFile);
                 WriteObject(file);
             }
         }

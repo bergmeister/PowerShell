@@ -20,7 +20,10 @@ Describe "NewTemporaryFile" -Tags "CI" {
     $defaultExtension = '.tmp'
 
     AfterEach {
-        Remove-Item $script:tempFile -ErrorAction SilentlyContinue -Force # variable needs script scope because it gets defined in It block
+        if ($null -ne $script:tempFile)
+        {
+            Remove-Item $script:tempFile -ErrorAction SilentlyContinue -Force # variable needs script scope because it gets defined in It block
+        }
     }
 
     It "creates a new temporary file" {
