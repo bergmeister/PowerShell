@@ -6,26 +6,29 @@
 <#
     Purpose:
         Verify that New-TemporaryFile creates a temporary file.
-        It has options to change the default extension '.tmp' and a switch to use a Guid as a name.
+        It has an 'Extension' parameter to change the default extension '.tmp'.
 
     Action:
-        Run New-TemporaryFile with different combinations of parameters
+        Run New-TemporaryFile.
 
     Expected Result:
-        A FileInfo object for the temporary file is returned and the temporary file gets created.
+        A FileInfo object for the temporary file is returned and the temporary file gets created correctly.
 #>
 
 Describe "NewTemporaryFile" -Tags "CI" {
+
+    $defaultExtension = '.tmp'
 
     AfterEach {
         Remove-Item $script:tempFile -ErrorAction SilentlyContinue -Force # variable needs script scope because it gets defined in It block
     }
 
     It "creates a new temporary file" {
+
         $script:tempFile = New-TemporaryFile
         $tempFile | Should Exist
         $tempFile | Should BeOfType System.IO.FileInfo
-        $tempFile.Extension | Should be ".tmp"
+        $tempFile.Extension | Should be $defaultExtension
     }
 
     $extensionParameterTestCases = @(
@@ -40,6 +43,8 @@ Describe "NewTemporaryFile" -Tags "CI" {
         
         $script:tempFile = New-TemporaryFile -Extension $extension
             $tempFile | Should Exist
+            # Because the internal algorithm does renaming it is worthwhile checking that the original file does not get left behin
+            [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
             $tempFile | Should BeOfType System.IO.FileInfo
             $tempFile.Extension | Should be ".csv"
             $tempFile.FullName.EndsWith($extension) | Should be $true
@@ -49,7 +54,7 @@ Describe "NewTemporaryFile" -Tags "CI" {
         $invalidFileNameChars = [System.IO.Path]::GetInvalidFileNameChars()
         foreach($invalidFileNameChar in $invalidFileNameChars)
         {
-            #{ New-TemporaryFile -Extension $invalidFileNameChar -ErrorAction Stop } | ShouldBeErrorId "NewTemporaryInvalidArgument,Microsoft.PowerShell.Commands.NewTemporaryFileCommand"
+            { New-TemporaryFile -Extension $invalidFileNameChar -ErrorAction Stop } | ShouldBeErrorId "NewTemporaryInvalidArgument,Microsoft.PowerShell.Commands.NewTemporaryFileCommand"
         }
     }
 
