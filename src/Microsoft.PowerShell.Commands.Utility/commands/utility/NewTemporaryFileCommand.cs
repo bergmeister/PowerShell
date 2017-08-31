@@ -51,20 +51,23 @@ namespace Microsoft.PowerShell.Commands
                 // In case the random temporary file already exists, retry 
                 while (attempts++ < 10 && !creationOfFileSuccessful)
                 {
-                    string fileName = Path.GetRandomFileName();
+                    string temporaryFile;
                     try
                     {                     
-                        fileName = Path.ChangeExtension(fileName, Extension);
-                        filePath = Path.Combine(tempPath, fileName);
-                        // Try to create the temporary file.
-                        // If this is successful then we will always be able to return it to the user and therefore do not need to remove it.
-                        using (new FileStream(filePath, FileMode.CreateNew)) { }
+                        temporaryFile = Path.GetTempFileName(); // this already creates the temporary file
+                        if (this.Extension)
+                        {
+                            // rename file
+                            temporaryFileWithCustomExtension = Path.ChangeExtension(fileName, Extension);
+                            File.Move(temporaryFile, temporaryFileWithCustomExtension);
+                        }
                         creationOfFileSuccessful = true;
                         WriteVerbose($"Created temporary file {filePath}.");
                     }
                     catch (IOException) // file already exists -> retry
                     {
                         attempts++;
+                        File.Delete(temporaryFile);
                     }
                     catch (Exception exception) // fatal error, which could be e.g. insufficient permissions, etc.
                     {
