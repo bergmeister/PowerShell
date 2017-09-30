@@ -47,7 +47,7 @@ Describe "NewTemporaryFile" -Tags "CI" {
 			"defaultExtensionWithUpperCasing:$defaultExtensionWithUpperCasing"
             $script:tempFile = New-TemporaryFile  -Extension $defaultExtensionWithUpperCasing
             $tempFile | Should Exist
-			"FullName: $($$tempFile.FullName)"
+			"FullName: $($tempFile.FullName)"
 			"TEst-Path: $(TEst-Path ([System.IO.Path]::ChangeExtension($tempFile, $defaultExtension)))"
             [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
             $tempFile.Extension | Should be $defaultExtensionWithUpperCasing
