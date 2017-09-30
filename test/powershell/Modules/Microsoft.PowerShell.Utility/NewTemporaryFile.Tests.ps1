@@ -22,12 +22,12 @@ Describe "NewTemporaryFile" -Tags "CI" {
     AfterEach {
         if ($null -ne $script:tempFile)
         {
-            Remove-Item $script:tempFile -ErrorAction SilentlyContinue -Force # variable needs script scope because it gets defined in It block
+            # tempFile variable needs script scope because it gets defined in It block
+            Remove-Item $script:tempFile -ErrorAction SilentlyContinue -Force
         }
     }
 
     It "creates a new temporary file" {
-
         $script:tempFile = New-TemporaryFile
         $tempFile | Should Exist
         $tempFile | Should BeOfType System.IO.FileInfo
@@ -35,6 +35,8 @@ Describe "NewTemporaryFile" -Tags "CI" {
     }
 
     $extensionParameterTestCases = @(
+        @{ extension = 'tmp' }
+        @{ extension = 'TMP' }
         @{ extension = 'csv' }
         @{ extension = '.csv' }
         @{ extension = '..csv' }
