@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
+using System.Threading;
 
 namespace Microsoft.PowerShell.Commands
 {
@@ -102,7 +103,7 @@ namespace Microsoft.PowerShell.Commands
                                             "NewTemporaryFileWriteError",
                                             ErrorCategory.WriteError,
                                             tempPath));
-                                    Threading.Sleep(10); // to increase chance of success in the next try
+                                    Thread.Sleep(10); // to increase chance of success in the next try
                                 }
                             }
                         }
