@@ -34,6 +34,23 @@ Describe "NewTemporaryFile" -Tags "CI" {
         $tempFile.Extension | Should be $defaultExtension
     }
 
+    It "creates a new temporary file with the Extension parameter being the default" {
+        $script:tempFile = New-TemporaryFile -Extension $defaultExtension
+        $tempFile | Should Exist
+        $tempFile.Extension | Should be $defaultExtension
+    }
+
+    if (!$IsWindows)
+    {
+        It "creates a new temporary file with the Extension parameter being the default but different casing on Unix" {
+            $defaultExtensionWithUpperCasing = $defaultExtension.ToUpper()
+            $script:tempFile = New-TemporaryFile  -Extension $defaultExtensionWithUpperCasing
+            $tempFile | Should Exist
+            [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
+            $tempFile.Extension | Should be $defaultExtensionWithUpperCasing
+        }
+    }
+
     It "creates a new temporary file with a specific extension" -TestCases @(
         @{ extension = 'csv' }
         @{ extension = '.csv' }
@@ -48,8 +65,8 @@ Describe "NewTemporaryFile" -Tags "CI" {
         # Because the internal algorithm does renaming it is worthwhile checking that the original file does not get left behind
         [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
         $tempFile | Should BeOfType System.IO.FileInfo
-        $tempFile.Extension | Should be ".csv"
         $tempFile.FullName.EndsWith($extension) | Should be $true
+        $tempFile.Extension | Should be ".csv"
     }
 
     It "New-TemporaryItem with an an invalid character in the -Extension parameter should throw NewTemporaryInvalidArgument error" {
