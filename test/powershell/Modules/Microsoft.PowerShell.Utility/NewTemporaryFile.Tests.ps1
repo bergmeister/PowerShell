@@ -34,25 +34,22 @@ Describe "NewTemporaryFile" -Tags "CI" {
         $tempFile.Extension | Should be $defaultExtension
     }
 
-    $extensionParameterTestCases = @(
-        @{ extension = 'tmp' }
-        @{ extension = 'TMP' }
+    It "creates a new temporary file with a specific extension" -TestCases @(
         @{ extension = 'csv' }
         @{ extension = '.csv' }
         @{ extension = '..csv' }
         @{ extension = 'txt.csv' }
         @{ extension = '.txt.csv' }
-    )
-    It "creates a new temporary file with a specific extension" -TestCases $extensionParameterTestCases -Test {
+    ) -Test {
         Param ([string]$extension)
         
         $script:tempFile = New-TemporaryFile -Extension $extension
-            $tempFile | Should Exist
-            # Because the internal algorithm does renaming it is worthwhile checking that the original file does not get left behin
-            [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
-            $tempFile | Should BeOfType System.IO.FileInfo
-            $tempFile.Extension | Should be ".csv"
-            $tempFile.FullName.EndsWith($extension) | Should be $true
+        $tempFile | Should Exist
+        # Because the internal algorithm does renaming it is worthwhile checking that the original file does not get left behind
+        [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
+        $tempFile | Should BeOfType System.IO.FileInfo
+        $tempFile.Extension | Should be ".csv"
+        $tempFile.FullName.EndsWith($extension) | Should be $true
     }
 
     It "New-TemporaryItem with an an invalid character in the -Extension parameter should throw NewTemporaryInvalidArgument error" {
