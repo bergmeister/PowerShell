@@ -44,12 +44,16 @@ Describe "NewTemporaryFile" -Tags "CI" {
     {
         It "creates a new temporary file with the Extension parameter being the default but different casing" {
             $defaultExtensionWithUpperCasing = $defaultExtension.ToUpper()
-			"defaultExtensionWithUpperCasing:$defaultExtensionWithUpperCasing"
+			Write-Host "defaultExtensionWithUpperCasing:$defaultExtensionWithUpperCasing"
             $script:tempFile = New-TemporaryFile  -Extension $defaultExtensionWithUpperCasing
             $tempFile | Should Exist
-			"FullName: $($tempFile.FullName)"
-			"TEst-Path: $(TEst-Path ([System.IO.Path]::ChangeExtension($tempFile, $defaultExtension)))"
-            [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
+			Write-Host "FullName: $($tempFile.FullName)"
+			Write-Host "TEst-Path: $(TEst-Path ([System.IO.Path]::ChangeExtension($tempFile, $defaultExtension)))"
+			Write-Host "uname: $(uname)"
+	    if (!(uname -like 'Darwin'))
+	    {
+	       [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
+	    }
             $tempFile.Extension | Should be $defaultExtensionWithUpperCasing
         }
     }
