@@ -50,7 +50,7 @@ Describe "NewTemporaryFile" -Tags "CI" {
 			Write-Host "FullName: $($tempFile.FullName)"
 			Write-Host "TEst-Path: $(TEst-Path ([System.IO.Path]::ChangeExtension($tempFile, $defaultExtension)))"
 			Write-Host "uname: $(uname)"
-	    if (!(uname -like 'Darwin'))
+	    if (!((uname) -like 'Darwin'))
 	    {
 	       [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
 	    }
