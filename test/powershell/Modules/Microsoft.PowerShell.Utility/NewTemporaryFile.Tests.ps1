@@ -40,23 +40,21 @@ Describe "NewTemporaryFile" -Tags "CI" {
         $tempFile.Extension | Should be $defaultExtension
     }
 
-    if (!$IsWindows)
-    {
+
         It "creates a new temporary file with the Extension parameter being the default but different casing" {
             $defaultExtensionWithUpperCasing = $defaultExtension.ToUpper()
 			Write-Host "defaultExtensionWithUpperCasing:$defaultExtensionWithUpperCasing"
             $script:tempFile = New-TemporaryFile  -Extension $defaultExtensionWithUpperCasing
             $tempFile | Should Exist
 			Write-Host "FullName: $($tempFile.FullName)"
-			Write-Host "TEst-Path: $(TEst-Path ([System.IO.Path]::ChangeExtension($tempFile, $defaultExtension)))"
-			Write-Host "uname: $(uname)"
-	    if (!((uname) -like 'Darwin'))
+			Write-Host "Test-Path: $(TEst-Path ([System.IO.Path]::ChangeExtension($tempFile, $defaultExtension)))"
+			#Write-Host "uname: $(uname)"
+	    if ($IsLinux)
 	    {
 	       [System.IO.Path]::ChangeExtension($tempFile, $defaultExtension) | Should Not Exist
 	    }
             $tempFile.Extension | Should be $defaultExtensionWithUpperCasing
         }
-    }
 
     It "creates a new temporary file with a specific extension" -TestCases @(
         @{ extension = 'csv' }
