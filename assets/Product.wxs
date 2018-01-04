@@ -30,9 +30,9 @@
     <WixVariable Id="WixUIExclamationIco" Value="assets\WixUIInfoIco.bmp" />
     <WixVariable Id="WixUIInfoIco" Value="assets\WixUIInfoIco.bmp" />
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Open $(env.ProductName)" />
-    <!-- Default value of Checkbox of starting PowerShell after installation -->
-    <Property Id="WixShellExecTarget" Value="[$(var.ProductVersionWithName)]pwsh.exe"/>
-    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+    <CustomAction Id="LaunchApplication" Directory="INSTALLFOLDER" ExeCommand="[$(var.ProductVersionWithName)]pwsh.exe -NoExit -Command Set-Location $env:HOME"
+                  Return="asyncNoWait" Impersonate="yes" />
+
     <UI>
       <Dialog Id="MyExitDialog" Width="370" Height="270" Title="!(loc.ExitDialog_Title)">
         <Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)" />
