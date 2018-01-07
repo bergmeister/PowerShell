@@ -2068,10 +2068,6 @@ function New-MSIPackage
         [ValidateNotNullOrEmpty()]
         [string] $ProductVersion,
 
-        # Product Guid needs to change for every version to support SxS install
-        [ValidateNotNullOrEmpty()]
-        [string] $ProductGuid = 'a5249933-73a1-4b10-8a4c-13c98bdc16fe',
-
         # Source Path to the Product Files - required to package the contents into an MSI
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
@@ -2082,14 +2078,12 @@ function New-MSIPackage
         [string] $ProductWxsPath = "$PSScriptRoot\assets\Product.wxs",
 
         # Path to Assets folder containing artifacts such as icons, images
-        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string] $AssetsPath,
+        [string] $AssetsPath = "$PSScriptRoot\assets",
 
         # Path to license.rtf file - for the EULA
-        [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string] $LicenseFilePath,
+        [string] $LicenseFilePath = "$PSScriptRoot\assets\licence.rtf",
 
         # Architecture to use when creating the MSI
         [Parameter(Mandatory = $true)]
@@ -2136,7 +2130,8 @@ function New-MSIPackage
     [Environment]::SetEnvironmentVariable("ProductSourcePath", $ProductSourcePath, "Process")
     # These variables are used by Product.wxs in assets directory
     [Environment]::SetEnvironmentVariable("ProductName", $ProductName, "Process")
-    [Environment]::SetEnvironmentVariable("ProductGuid", $ProductGuid, "Process")
+    # Product Guid needs to change for every version to support SxS install
+    [Environment]::SetEnvironmentVariable("ProductGuid", (New-Guid).Guid, "Process")
     [Environment]::SetEnvironmentVariable("ProductVersion", $ProductVersion, "Process")
     [Environment]::SetEnvironmentVariable("ProductSemanticVersion", $ProductSemanticVersion, "Process")
     [Environment]::SetEnvironmentVariable("ProductVersionWithName", $productVersionWithName, "Process")

@@ -240,10 +240,6 @@ function Start-PSPackage {
                     ProductNameSuffix = $NameSuffix
                     ProductSourcePath = $Source
                     ProductVersion = $Version
-                    AssetsPath = "$PSScriptRoot\..\..\assets"
-                    LicenseFilePath = "$PSScriptRoot\..\..\assets\license.rtf"
-                    # Product Guid needs to be unique for every PowerShell version to allow SxS install
-                    ProductGuid = New-Guid
                     ProductTargetArchitecture = $TargetArchitecture
                     Force = $Force
                 }
