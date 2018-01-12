@@ -18,6 +18,11 @@
     <PackageReference Include="Microsoft.Management.Infrastructure" Version="1.0.0-alpha*" />
     <PackageReference Include="PowerShell.Core.Instrumentation" Version="6.0.0-beta*" />
   </ItemGroup>
+  
+  <!-- XML serializer generator to improve speed. See https://github.com/dotnet/core/blob/master/samples/xmlserializergenerator-instructions.md -->
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.XmlSerializer.Generator" Version="1.0.0" />
+  </ItemGroup>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CORECLR</DefineConstants>
