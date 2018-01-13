@@ -41,6 +41,11 @@ Branches
 
 #### Sync your local repo
 
+In order to be able to update a fork, you need to set the **upstream**, which you can do as follows:
+```sh
+git remote add upstream https://github.com/PowerShell/PowerShell.git
+```
+
 Use **git rebase** instead of **git merge** and **git pull**, when you're updating your feature-branch.
 
 ```sh
@@ -49,8 +54,8 @@ Use **git rebase** instead of **git merge** and **git pull**, when you're updati
 # -p : tells it to remove obsolete remote branch references (when they are removed from remote)
 git fetch --all -p
 
-# rebase on origin/master will rewrite your branch history
-git rebase origin/master
+# rebase on upstream/master will rewrite your branch history
+git rebase upstream/master
 ```
 
 #### More complex scenarios
