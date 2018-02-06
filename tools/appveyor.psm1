@@ -445,7 +445,6 @@ function Get-ReleaseTag
 # Implements AppVeyor 'on_finish' step
 function Invoke-AppveyorFinish
 {
-    $exitCode = 0
     try {
         $releaseTag = Get-ReleaseTag
 
@@ -480,12 +479,13 @@ function Invoke-AppveyorFinish
         $msi = $artifacts | Where-Object { $_.EndsWith(".msi") }
         $msiLog = Join-Path (Get-Location) 'msilog.txt'
         $msiExecProcess = Start-Process msiexec.exe -Wait -ArgumentList "/I $msi /quiet /l*vx $msiLog" -NoNewWindow -PassThru
+        $msiSmokeTestName = 'MSI installation Smoke test'
         if ($msiExecProcess.ExitCode -ne 0)
         {
             Push-AppveyorArtifact msiLog.txt
-            $exitCode = $msiExecProcess.ExitCode
-            throw "MSI installer failed and returned error code $exitCode. MSI Log was uploaded as artifact."
+            Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Failed
         }
+        Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Passed
         Write-Verbose "MSI smoke test was successful" -Verbose
 
         # only publish assembly nuget packages if it is a daily build and tests passed
@@ -540,8 +540,5 @@ function Invoke-AppveyorFinish
     }
     catch {
         Write-Host -Foreground Red $_
-    }
-    finally {
-        $host.SetShouldExit($exitCode)
     }
 }
