@@ -483,9 +483,9 @@ function Invoke-AppveyorFinish
         if ($msiExecProcess.ExitCode -ne 0)
         {
             Push-AppveyorArtifact msiLog.txt
-            Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
+            Add-AppveyorTest -Name $msiSmokeTestName -Framework Pester -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
         }
-        Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
+        Add-AppveyorTest -Name $msiSmokeTestName -Framework Pester -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
         Write-Verbose "MSI smoke test was successful" -Verbose
 
         # only publish assembly nuget packages if it is a daily build and tests passed
