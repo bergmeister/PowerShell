@@ -478,14 +478,14 @@ function Invoke-AppveyorFinish
         Write-Verbose "Smoke-Testing MSI installer" -Verbose
         $msi = $artifacts | Where-Object { $_.EndsWith(".msi") }
         $msiLog = Join-Path (Get-Location) 'msilog.txt'
-        $msiExecProcess = Start-Process msiexec.exe -Wait -ArgumentList "/I $msi /quiet /l*vx $msiLog" -NoNewWindow -PassThru
+        $installTime = Measure-Command { $msiExecProcess = Start-Process msiexec.exe -Wait -ArgumentList "/I $msi /quiet /l*vx $msiLog" -NoNewWindow -PassThru }
         $msiSmokeTestName = 'MSI installation Smoke test'
         if ($msiExecProcess.ExitCode -ne 0)
         {
             Push-AppveyorArtifact msiLog.txt
-            Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Failed
+            Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
         }
-        Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Passed
+        Add-AppveyorTest -Name $msiSmokeTestName -Framework MSI -Filename $msi -Outcome Failed  $installTime.Milliseconds
         Write-Verbose "MSI smoke test was successful" -Verbose
 
         # only publish assembly nuget packages if it is a daily build and tests passed
