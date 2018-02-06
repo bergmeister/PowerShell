@@ -2218,6 +2218,7 @@ function New-MSIPackage
         if ($null -ne $env:CI)
         {
            Add-AppveyorCompilationMessage $errorMessage -Category Error -FileName $MyInvocation.ScriptName -Line $MyInvocation.ScriptLineNumber
+           Add-AppveyorTest -Name "MSI Build" -Framework MSI -Filename $msiLocationPath -Outcome Failed
         }
         throw $errorMessage
     }
