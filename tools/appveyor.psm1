@@ -486,7 +486,8 @@ function Invoke-AppveyorFinish
             Add-AppveyorTest -Name $msiSmokeTestName -Framework Pester -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
         }
         Add-AppveyorTest -Name $msiSmokeTestName -Framework Pester -Filename $msi -Outcome Failed -Duration $installTime.Milliseconds
-        Write-Verbose "MSI smoke test was successful" -Verbose
+        throw "I am a naughty build that should be red"
+        #Write-Verbose "MSI smoke test was successful" -Verbose
 
         # only publish assembly nuget packages if it is a daily build and tests passed
         if((Test-DailyBuild) -and $env:TestPassed -eq 'True')
