@@ -12,10 +12,11 @@ nuget:
 
 install:
   - git submodule update --init
-  - pwsh: Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorInstall
+  - ps: Import-Module .\tools\Appveyor.psm1
+  - ps: Invoke-AppveyorInstall
 
 build_script:
-  - pwsh:  Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorBuild
+  - ps:  Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorBuild
 
 test_script:
   - pwsh:  Import-Module .\tools\Appveyor.psm1; Invoke-AppveyorTest
