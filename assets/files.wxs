@@ -484,6 +484,9 @@
             <Component Id="cmp638B7DC05FC5B4ABB321BFEAF36D6C2F" Guid="{BED735BB-7CB0-4FD0-8C20-74BCCB642818}">
                 <File Id="filB2EC26320BDBF8A5059651D849DDF4FB" KeyPath="yes" Source="$(env.ProductSourcePath)\api-ms-win-core-debug-l1-1-0.dll" />
             </Component>
+            <Component Id="cmpCMPBEBE69C76E9D42EE9D1B5A1BDC68D9EF" Guid="{C1A8F06A-A86A-45AB-93DA-B350949D4ABA}">
+                <File Id="fil592BA59B381D4807BD99574200494481" KeyPath="yes" Source="$(env.ProductSourcePath)\NJsonSchema.dll" />
+            </Component>
             <Component Id="cmp79CAE24B87836EB856F795A0F0C0277A" Guid="{5E89AF7C-AD9A-4216-BCB3-10B0CDDBB304}">
                 <File Id="fil12A170221FD22352E7324E6890C04CA6" KeyPath="yes" Source="$(env.ProductSourcePath)\pwsh.dll" />
             </Component>
