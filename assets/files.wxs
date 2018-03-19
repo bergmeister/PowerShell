@@ -484,7 +484,7 @@
             <Component Id="cmp638B7DC05FC5B4ABB321BFEAF36D6C2F" Guid="{BED735BB-7CB0-4FD0-8C20-74BCCB642818}">
                 <File Id="filB2EC26320BDBF8A5059651D849DDF4FB" KeyPath="yes" Source="$(env.ProductSourcePath)\api-ms-win-core-debug-l1-1-0.dll" />
             </Component>
-            <Component Id="cmpCMPBEBE69C76E9D42EE9D1B5A1BDC68D9EF" Guid="{C1A8F06A-A86A-45AB-93DA-B350949D4ABA}">
+            <Component Id="cmpCMPBEBE69C76E9D42EE9D1B5A1BDC68D" Guid="{C1A8F06A-A86A-45AB-93DA-B350949D4ABA}">
                 <File Id="fil592BA59B381D4807BD99574200494481" KeyPath="yes" Source="$(env.ProductSourcePath)\NJsonSchema.dll" />
             </Component>
             <Component Id="cmp79CAE24B87836EB856F795A0F0C0277A" Guid="{5E89AF7C-AD9A-4216-BCB3-10B0CDDBB304}">
@@ -1981,7 +1981,7 @@
             <ComponentRef Id="cmpC0838E8C57D468419FA312FCDC692C2D" />
             <ComponentRef Id="cmp53AF51D171028D3271F1D0D78B95C0B4" />
             <ComponentRef Id="cmp638B7DC05FC5B4ABB321BFEAF36D6C2F" />
-            <ComponentRef Id="cmp638B7DC05FC5B4ABB321BFEAF36D6C2F" />
+            <ComponentRef Id="cmpCMPBEBE69C76E9D42EE9D1B5A1BDC68D" />
             <ComponentRef Id="cmp79CAE24B87836EB856F795A0F0C0277A" />
             <ComponentRef Id="cmpC46C08E02A4A83F863F812A3EC12B002" />
             <ComponentRef Id="cmp9782F919130CAF5E0CF02FE60CC64205" />
