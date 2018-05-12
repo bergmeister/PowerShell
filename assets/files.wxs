@@ -163,6 +163,12 @@
             <Component Id="cmp2C924B87CA7B55E4B688163D0424BF1B" Guid="{2D820C8E-DB06-4EA5-93E3-2FC10E7C23C6}">
                 <File Id="filCE0E4D674C0174C77D9D65543C16D1E7" KeyPath="yes" Source="$(env.ProductSourcePath)\Microsoft.VisualBasic.dll" />
             </Component>
+            <Component Id="cmp2F44BF72699446018A3D4B59F106E875" Guid="{CAB2E289-CF60-4608-8010-D41FC94E0D85}">
+                <File Id="filA67D19658920482985E40F4814261D49" KeyPath="yes" Source="$(env.ProductSourcePath)\Microsoft.WindowsAPICodePack.dll" />
+            </Component>
+            <Component Id="cmp58521D29413145A98931581C1E6DF7F4" Guid="{72CE4774-16EC-40F6-93EA-69CCED97289F}">
+                <File Id="fil976CDCA89F574A11AB814B0EA1D83B39" KeyPath="yes" Source="$(env.ProductSourcePath)\Microsoft.WindowsAPICodePack.Shell.dll" />
+            </Component>
             <Component Id="cmp0D69AF816E19455A8CF5034C61317EA3" Guid="{6C7B2915-F557-4602-9862-3B4284AB77E0}">
                 <File Id="fil8C7C4F9B663882D6E458709F9E960D1C" KeyPath="yes" Source="$(env.ProductSourcePath)\System.IO.UnmanagedMemoryStream.dll" />
             </Component>
@@ -1889,6 +1895,8 @@
             <ComponentRef Id="cmp6656B94731627C46DA81F79A51A024E3" />
             <ComponentRef Id="cmp78C94EF3D79D1B59DE4388AA2667668E" />
             <ComponentRef Id="cmp2C924B87CA7B55E4B688163D0424BF1B" />
+            <ComponentRef Id="cmp2F44BF72699446018A3D4B59F106E875" />
+            <ComponentRef Id="cmp58521D29413145A98931581C1E6DF7F4" />
             <ComponentRef Id="cmp0D69AF816E19455A8CF5034C61317EA3" />
             <ComponentRef Id="cmp0D69AF816E19455A8CF5034C61317EA4" />
             <ComponentRef Id="cmp9517BE666A9E7C23D64C30BB87042294" />
