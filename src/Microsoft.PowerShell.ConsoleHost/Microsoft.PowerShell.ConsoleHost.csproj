@@ -2,7 +2,7 @@
   <Import Project="..\..\PowerShell.Common.props" />
   <PropertyGroup>
     <Description>PowerShell Host</Description>
-    <NoWarn>$(NoWarn);CS1570</NoWarn>
+    <NoWarn>$(NoWarn);CS1570;NU1701</NoWarn>
     <AssemblyName>Microsoft.PowerShell.ConsoleHost</AssemblyName>
   </PropertyGroup>
 
@@ -22,6 +22,11 @@
     <Compile Remove="gen\HostMshSnapinResources.cs" />
 
     <EmbeddedResource Remove="resources\HostMshSnapinResources.resx" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' != 'Linux' ">
+    <PackageReference Include="Microsoft.WindowsAPICodePack-Core" Version="1.1.0.2" />
+    <PackageReference Include="Microsoft.WindowsAPICodePack.Shell" Version="1.1.0" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

@@ -3,6 +3,10 @@
 
 #pragma warning disable 1634, 1691
 
+# if !UNIX
+using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.Taskbar;
+#endif
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -119,6 +123,18 @@ namespace Microsoft.PowerShell
                     Thread.Sleep(1000);
                 }
             }
+#endif
+
+# if !UNIX
+            string cmdPath = Assembly.GetEntryAssembly().Location.Replace(".dll", ".exe"); // TODO: think of a better solution
+            Microsoft.WindowsAPICodePack.Taskbar.JumpList jumpList = JumpList.CreateJumpList();
+            jumpList.AddUserTasks(new JumpListLink(cmdPath, "Run as Administrator")
+            {
+                 // TODO remove hard coded path to icon. Problem: We cannot assume installation, which has 'assets' folder
+                // IconReference = new IconReference(@"C:\Users\cberg\git\PowerShell\assets\Powershell_black.ico", 0),
+            });
+            // TODO: Make it run as Administrator
+            jumpList.Refresh();
 #endif
 
             // put PSHOME in front of PATH so that calling `powershell` within `powershell` always starts the same running version
