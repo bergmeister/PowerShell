@@ -126,15 +126,18 @@ namespace Microsoft.PowerShell
 #endif
 
 # if !UNIX
-            string cmdPath = Assembly.GetEntryAssembly().Location.Replace(".dll", ".exe"); // TODO: think of a better solution
-            Microsoft.WindowsAPICodePack.Taskbar.JumpList jumpList = JumpList.CreateJumpList();
-            jumpList.AddUserTasks(new JumpListLink(cmdPath, "Run as Administrator")
+            if (Environment.UserInteractive)
             {
-                 // TODO remove hard coded path to icon. Problem: We cannot assume installation, which has 'assets' folder
-                // IconReference = new IconReference(@"C:\Users\cberg\git\PowerShell\assets\Powershell_black.ico", 0),
-            });
-            // TODO: Make it run as Administrator
-            jumpList.Refresh();
+                string cmdPath = Assembly.GetEntryAssembly().Location.Replace(".dll", ".exe"); // TODO: think of a better solution
+                Microsoft.WindowsAPICodePack.Taskbar.JumpList jumpList = JumpList.CreateJumpList();
+                jumpList.AddUserTasks(new JumpListLink(cmdPath, "Run as Administrator")
+                {
+                    // TODO remove hard coded path to icon. Problem: We cannot assume installation, which has 'assets' folder
+                    // IconReference = new IconReference(@"C:\Users\cberg\git\PowerShell\assets\Powershell_black.ico", 0),
+                });
+                // TODO: Make it run as Administrator
+                jumpList.Refresh();
+            }
 #endif
 
             // put PSHOME in front of PATH so that calling `powershell` within `powershell` always starts the same running version
