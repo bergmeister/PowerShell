@@ -46,44 +46,7 @@ namespace Microsoft.PowerShell
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         internal interface IShellLinkW
         {
-            void GetPath(
-                [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile,
-                int cchMaxPath,
-                IntPtr pfd,
-                uint fFlags);
-            void GetIDList(out IntPtr ppidl);
-            void SetIDList(IntPtr pidl);
-            void GetDescription(
-                [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile,
-                int cchMaxName);
-            void SetDescription(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszName);
-            void GetWorkingDirectory(
-                [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir,
-                int cchMaxPath
-                );
-            void SetWorkingDirectory(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszDir);
-            void GetArguments(
-                [Out(), MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs,
-                int cchMaxPath);
-            void SetArguments(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
-            void GetHotKey(out short wHotKey);
-            void SetHotKey(short wHotKey);
-            void GetShowCmd(out uint iShowCmd);
             void SetShowCmd(uint iShowCmd);
-            void GetIconLocation(
-                [Out(), MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pszIconPath,
-                int cchIconPath,
-                out int iIcon);
-            void SetIconLocation(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszIconPath,
-                int iIcon);
-            void SetRelativePath(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszPathRel,
-                uint dwReserved);
-            void Resolve(IntPtr hwnd, uint fFlags);
             void SetPath(
                 [MarshalAs(UnmanagedType.LPWStr)] string pszFile);
         }
@@ -96,32 +59,6 @@ namespace Microsoft.PowerShell
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         internal interface IPropertyStore
         {
-            /// <summary>
-            /// Gets the number of properties contained in the property store.
-            /// </summary>
-            /// <param name="propertyCount"></param>
-            /// <returns></returns>
-            [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-            HResult GetCount([Out] out uint propertyCount);
-
-            /// <summary>
-            /// Get a property key located at a specific index.
-            /// </summary>
-            /// <param name="propertyIndex"></param>
-            /// <param name="key"></param>
-            /// <returns></returns>
-            [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-            HResult GetAt([In] uint propertyIndex, out PropertyKey key);
-
-            /// <summary>
-            /// Gets the value of a property from the store.
-            /// </summary>
-            /// <param name="key"></param>
-            /// <param name="pv"></param>
-            /// <returns></returns>
-            [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-            HResult GetValue([In] ref PropertyKey key, [Out] PropVariant pv);
-
             /// <summary>
             /// Sets the value of a property in the store.
             /// </summary>
@@ -145,28 +82,18 @@ namespace Microsoft.PowerShell
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         internal interface ICustomDestinationList
         {
-            void SetAppID(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
             [PreserveSig]
             HResult BeginList(
                 out uint cMaxSlots,
                 ref Guid riid,
                 [Out(), MarshalAs(UnmanagedType.Interface)] out object ppvObject);
             [PreserveSig]
-            HResult AppendCategory(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszCategory,
-                [MarshalAs(UnmanagedType.Interface)] IObjectArray poa);
-            void AppendKnownCategory(
-                [MarshalAs(UnmanagedType.I4)] KnownDestinationCategory category);
-            [PreserveSig]
+
             HResult AddUserTasks(
                 [MarshalAs(UnmanagedType.Interface)] IObjectArray poa);
+
             void CommitList();
-            void GetRemovedDestinations(
-                ref Guid riid,
-                [Out(), MarshalAs(UnmanagedType.Interface)] out object ppvObject);
-            void DeleteList(
-                [MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
+
             void AbortList();
         }
 
@@ -216,15 +143,6 @@ namespace Microsoft.PowerShell
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         internal interface IShellLinkDataListW
         {
-            [PreserveSig]
-            Int32 AddDataBlock(IntPtr pDataBlock);
-
-            [PreserveSig]
-            Int32 CopyDataBlock(UInt32 dwSig, out IntPtr ppDataBlock);
-
-            [PreserveSig]
-            Int32 RemoveDataBlock(UInt32 dwSig);
-
             void GetFlags(out uint pdwFlags);
             void SetFlags(uint dwFlags);
         }
