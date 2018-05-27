@@ -50,11 +50,11 @@
     <Property Id="WixShellExecTarget" Value="[$(var.ProductDirectoryName)]pwsh.exe"/>
     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
 
-    <SetProperty Id="RegisterManifest"
-                 Before="RegisterManifest"
+    <SetProperty Id="RegisterWindowsEventLoggingManifest"
+                 Before="RegisterWindowsEventLoggingManifest"
                  Sequence="execute"
                  Value="&quot;[$(var.ProductDirectoryName)]pwsh.exe&quot; -NoProfile -ExecutionPolicy Bypass -File &quot;[$(var.ProductDirectoryName)]RegisterManifest.ps1&quot;" />
-    <CustomAction Id="RegisterManifest"
+    <CustomAction Id="RegisterWindowsEventLoggingManifest"
                   BinaryKey="WixCA"
                   DllEntry="CAQuietExec"
                   Execute="deferred"
@@ -71,8 +71,8 @@
                   Return="ignore"
                   Impersonate="no" />
     <InstallExecuteSequence>
-      <Custom Action="RegisterManifest" After="InstallFiles">
-        <![CDATA[NOT Installed AND (REGISTER_MANIFEST=1)]]>
+      <Custom Action="RegisterWindowsEventLoggingManifest" After="InstallFiles">
+        <![CDATA[NOT Installed AND (RegisterWindowsEventLoggingManifest=1)]]>
       </Custom>
       <Custom Action="EnablePSRemoting" After="InstallFiles">
         <![CDATA[NOT Installed AND (ENABLE_PSREMOTING=1)]]>
@@ -170,7 +170,7 @@
             <!-- Explorer context menu with 2 submenus to open PowerShell normally or as an Administator.
                  See https://blogs.msdn.microsoft.com/andrew_richards/2017/03/01/enhancing-the-open-command-prompt-here-shift-right-click-context-menu-experience/ for details -->
             <Component Id="ExplorerContextMenu" Guid="{df82e941-fced-4de9-aef8-c81a2946dd68}" KeyPath="yes">
-              <Condition>ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL</Condition>
+              <Condition>ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1</Condition>
               <!-- When clicking on background in Explorer -->
               <RegistryKey Root="HKCR" Key="Directory\Background\shell\$(var.ProductName)$(var.SimpleProductVersion)$(sys.BUILDARCH)">
                 <RegistryValue Type="string" Name="MUIVerb" Value="$(var.ExplorerContextMenuDialogText)"/>
@@ -242,12 +242,12 @@
 <!-- Explorer Context Menu Dialog -->
 <Fragment>
  <UI>
-    <Property Id="REGISTER_MANIFEST" Value="1" />
+    <Property Id="RegisterWindowsEventLoggingManifest" Value="1" />
     <Property Id="ADD_PATH" Value="$(var.AddPathDefault)" />
     <Dialog Id="ExplorerContextMenuDialog" Width="370" Height="270" Title="!(loc.ExitDialog_Title)">
       <!-- If the checkboxes are defined first, then they are first in the tab order and can be ticked and unticked using the spacebar -->
       <Control Id="AddToPathCheckBox" Type="CheckBox" X="20" Y="60" Width="290" Height="17" Property="ADD_PATH" CheckBoxValue="0" Text="Add $(var.ProductName) to Path Environment Variable"/>
-      <Control Id="RegisterManifestCheckBox" Type="CheckBox" X="20" Y="80" Width="290" Height="17" Property="REGISTER_MANIFEST" CheckBoxValue="0" Text="Register Windows Event Logging Manifest"/>
+      <Control Id="RegisterWindowsEventLoggingManifestCheckBox" Type="CheckBox" X="20" Y="80" Width="290" Height="17" Property="RegisterWindowsEventLoggingManifest" CheckBoxValue="0" Text="Register Windows Event Logging Manifest"/>
       <Control Id="EnablePSRemotingCheckBox" Type="CheckBox" X="20" Y="100" Width="290" Height="17" Property="ENABLE_PSREMOTING" CheckBoxValue="0" Text="Enable $(var.ProductName) remoting"/>
       <Control Id="ContextMenuOpenPowerShell" Type="CheckBox" X="20" Y="120" Width="290" Height="17" Property="ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL" CheckBoxValue="0" Text="Add '$(var.ExplorerContextSubMenuDialogText)' context menus to Explorer"/>
       <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)"/>
