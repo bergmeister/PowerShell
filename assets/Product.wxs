@@ -72,16 +72,16 @@
                   Impersonate="no" />
     <InstallExecuteSequence>
       <Custom Action="RegisterWindowsEventLoggingManifest" After="InstallFiles">
-        <![CDATA[NOT Installed AND (RegisterWindowsEventLoggingManifest=1)]]>
+        <![CDATA[(NOT INSTALLED OR NOT UPGRADINGPRODUCTCODE) AND (RegisterWindowsEventLoggingManifest=1)]]>
       </Custom>
       <Custom Action="EnablePSRemoting" After="InstallFiles">
-        <![CDATA[NOT Installed AND (ENABLE_PSREMOTING=1)]]>
+        <![CDATA[(NOT INSTALLED OR NOT UPGRADINGPRODUCTCODE) AND (ENABLE_PSREMOTING=1)]]>
       </Custom>
     </InstallExecuteSequence>
     <UI>
       <Dialog Id="MyExitDialog" Width="370" Height="270" Title="!(loc.ExitDialog_Title)">
         <Control Id="LaunchCheckBox" Type="CheckBox" X="10" Y="243" Width="170" Height="17" Property="LAUNCHAPPONEXIT" Hidden="yes" CheckBoxValue="1" Text="Launch $(env.ProductName)">
-          <Condition Action="show">NOT Installed</Condition>
+          <Condition Action="show"><![CDATA[(NOT INSTALLED OR NOT UPGRADINGPRODUCTCODE)]]></Condition>
         </Control>
         <Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)" />
         <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUICancel)" />
@@ -142,7 +142,7 @@
       </DirectorySearchRef>
     </Property>
     <Condition Message="$(env.ProductName) requires the Windows Management Framework 4.0 or newer to be installed to enable remoting over WinRM. You can find download links here: https://aka.ms/pscore6-prereq">
-      <![CDATA[Installed OR PWRSHPLUGIN_VERSION ]]>
+      <![CDATA[Installed OR PWRSHPLUGIN_VERSION]]>
     </Condition>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="$(var.ProductProgFilesDir)">
@@ -164,7 +164,7 @@
             </Component>
             <!-- add ourselves to %PATH% so pwsh.exe can be started from Windows PowerShell or cmd.exe -->
             <Component Id="SetPath" Guid="{9dbb7763-7baf-48e7-b025-3bdedcb0632f}" KeyPath="yes">
-              <Condition>ADD_PATH=1</Condition>
+              <Condition><![CDATA[(NOT INSTALLED OR NOT UPGRADINGPRODUCTCODE) AND ADD_PATH=1]]></Condition>
               <Environment Id="PATH" Action="set" Name="PATH" Part="last" Permanent="no" System="yes" Value="[$(var.ProductDirectoryName)]"/>
             </Component>
             <!-- Explorer context menu with 2 submenus to open PowerShell normally or as an Administator.
