@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using static Microsoft.PowerShell.ComInterfaces;
 
@@ -19,7 +20,7 @@ namespace Microsoft.PowerShell
             if (((startupInfo.dwFlags & STARTF_USESHOWWINDOW) == 1) && (startupInfo.wShowWindow != SW_HIDE))
             {
                 string cmdPath = Assembly.GetEntryAssembly().Location.Replace(".dll", ".exe");
-
+                var assets = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "assets/Powershell_av_colors.ico");
                 // Check for maximum available slots in JumpList and start creating the custom Destination List
                 var CLSID_DestinationList = new Guid(@"77f10cf0-3db5-4966-b520-b7c54fd35ed6");
                 const uint CLSCTX_INPROC_SERVER = 1;
@@ -44,6 +45,8 @@ namespace Microsoft.PowerShell
                     var nativeShellLink = (IShellLinkW)new CShellLink();
                     var nativePropertyStore = (IPropertyStore)nativeShellLink;
                     nativeShellLink.SetPath(cmdPath);
+                    var iconReference = new IconReference(assets, 0);
+                    nativeShellLink.SetIconLocation(iconReference.ModuleName, iconReference.ResourceId);
                     nativeShellLink.SetShowCmd(0);
                     var shellLinkDataList = (IShellLinkDataListW)nativeShellLink;
                     shellLinkDataList.GetFlags(out uint flags);
