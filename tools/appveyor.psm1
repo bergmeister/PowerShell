@@ -93,6 +93,7 @@ Function Test-DailyBuild
     $trueString = 'True'
     if(($env:PS_DAILY_BUILD -eq $trueString) -or ($env:APPVEYOR_SCHEDULED_BUILD -eq $trueString) -or ($env:APPVEYOR_REPO_TAG_NAME))
     {
+        Write-Host -Foreground Green "Daily build because PS_DAILY_BUILD is '$env:PS_DAILY_BUILD', APPVEYOR_SCHEDULED_BUILD is '$env:APPVEYOR_SCHEDULED_BUILD', APPVEYOR_REPO_TAG_NAME is '$env:APPVEYOR_REPO_TAG_NAME'"
         return $true
     }
 
@@ -101,8 +102,11 @@ Function Test-DailyBuild
     if($env:APPVEYOR_REPO_COMMIT_MESSAGE -match '\[feature\]')
     {
         Set-AppveyorBuildVariable -Name PS_DAILY_BUILD -Value $trueString
+        Write-Host -Foreground Green "Daily build because APPVEYOR_REPO_COMMIT_MESSAGE is '$env:APPVEYOR_REPO_COMMIT_MESSAGE'"
         return $true
     }
+
+    Write-Host -Foreground Green "Not a Daily build"
 
     return $false
 }
