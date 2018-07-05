@@ -3207,11 +3207,11 @@ namespace System.Management.Automation.Runspaces
                     // Hyper-V container (i.e., RuntimeId is not empty) uses Hyper-V socket transport.
                     // Windows Server container (i.e., RuntimeId is empty) uses named pipe transport for now.
                     // For backwards compatibilty, default to `powershell.exe`.
-                    var executabeName = doNotUseWindowsPowerShell ? "pwsh.exe" : "powershell.exe";
+                    var executableName = doNotUseWindowsPowerShell ? "pwsh.exe" : "powershell.exe";
 
                     cmd = string.Format(CultureInfo.InvariantCulture,
                         @"{{""CommandLine"": ""{0} {1} -NoLogo {2}"",""RestrictedToken"": {3}}}",
-                        executabeName, (RuntimeId != Guid.Empty) ? "-so -NoProfile" : "-NamedPipeServerMode",
+                        executableName, (RuntimeId != Guid.Empty) ? "-so -NoProfile" : "-NamedPipeServerMode",
                         String.IsNullOrEmpty(ConfigurationName) ? String.Empty : String.Concat("-Config ", ConfigurationName),
                         (RunAsAdmin) ? "false" : "true");
 
