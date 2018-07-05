@@ -26,7 +26,7 @@ namespace Microsoft.PowerShell.Commands
     /// It contains tons of utility functions which are used all
     /// across the remoting cmdlets
     /// </summary>
-    public abstract partial class PSRemotingCmdlet : PSCmdlet
+    public abstract class PSRemotingCmdlet : PSCmdlet
     {
         #region Overrides
 
@@ -290,7 +290,7 @@ namespace Microsoft.PowerShell.Commands
     ///     2. Invoke-Expression
     ///     3. Start-PSJob
     /// </summary>
-    public abstract partial class PSRemotingBaseCmdlet : PSRemotingCmdlet
+    public abstract class PSRemotingBaseCmdlet : PSRemotingCmdlet
     {
         #region Enums
 
@@ -543,6 +543,13 @@ namespace Microsoft.PowerShell.Commands
                    ParameterSetName = PSRemotingBaseCmdlet.ContainerIdParameterSet)]
         [ValidateNotNullOrEmpty]
         public virtual string[] ContainerId { get; set; }
+
+        /// <summary>
+        /// Do not connect to Windows PowerShell in the container, which is the default.
+        /// </summary>
+        [Parameter(ValueFromPipelineByPropertyName = true,
+                   ParameterSetName = InvokeCommandCommand.ContainerIdParameterSet)]
+        public SwitchParameter DoNotUseWindowsPowerShell { get; set; }
 
         /// <summary>
         /// When set, PowerShell process inside container will be launched with
@@ -1730,7 +1737,7 @@ namespace Microsoft.PowerShell.Commands
         /// Creates helper objects with the command for the specified
         /// container IDs or names.
         /// </summary>
-        protected virtual void CreateHelpersForSpecifiedContainerSession()
+        protected virtual void CreateHelpersForSpecifiedContainerSession(bool doNotUseWindowsPowerShell)
         {
             List<string> resolvedNameList = new List<string>();
 
@@ -1752,11 +1759,11 @@ namespace Microsoft.PowerShell.Commands
                     // Hyper-V container uses Hype-V socket as transport.
                     // Windows Server container uses named pipe as transport.
                     //
-                    connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(input, RunAsAdministrator.IsPresent, this.ConfigurationName);
+                    connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(input, RunAsAdministrator.IsPresent, this.ConfigurationName, doNotUseWindowsPowerShell);
 
                     resolvedNameList.Add(connectionInfo.ComputerName);
 
-                    connectionInfo.CreateContainerProcess();
+                    connectionInfo.CreateContainerProcess(doNotUseWindowsPowerShell);
 
                     remoteRunspace = new RemoteRunspace(Utils.GetTypeTableFromExecutionContextTLS(),
                         connectionInfo, this.Host, null, null, -1);
@@ -2085,7 +2092,7 @@ namespace Microsoft.PowerShell.Commands
                 case PSExecutionCmdlet.ContainerIdParameterSet:
                 case PSExecutionCmdlet.FilePathContainerIdParameterSet:
                     {
-                        CreateHelpersForSpecifiedContainerSession();
+                        CreateHelpersForSpecifiedContainerSession(this.DoNotUseWindowsPowerShell);
                     }
                     break;
             }
@@ -2508,6 +2515,15 @@ namespace Microsoft.PowerShell.Commands
                    ParameterSetName = PSRunspaceCmdlet.ContainerIdInstanceIdParameterSet)]
         [ValidateNotNullOrEmpty]
         public virtual string[] ContainerId { get; set; }
+
+        /// <summary>
+        /// Do not use Windows PowerShell, which is the default.
+        /// </summary>
+        [Parameter(ValueFromPipelineByPropertyName = true,
+                   ParameterSetName = PSRunspaceCmdlet.ContainerIdParameterSet)]
+        [Parameter(ValueFromPipelineByPropertyName = true,
+                   ParameterSetName = PSRunspaceCmdlet.ContainerIdInstanceIdParameterSet)]
+        public SwitchParameter DoNotUseWindowsPowerShell { get; set; }
 
         /// <summary>
         /// Guid of target virtual machine.

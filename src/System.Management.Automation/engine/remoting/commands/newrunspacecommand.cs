@@ -207,7 +207,7 @@ namespace Microsoft.PowerShell.Commands
             {
                 case NewPSSessionCommand.SessionParameterSet:
                     {
-                        remoteRunspaces = CreateRunspacesWhenRunspaceParameterSpecified();
+                        remoteRunspaces = CreateRunspacesWhenRunspaceParameterSpecified(DoNotUseWindowsPowerShell);
                     }
                     break;
 
@@ -232,7 +232,7 @@ namespace Microsoft.PowerShell.Commands
 
                 case NewPSSessionCommand.ContainerIdParameterSet:
                     {
-                        remoteRunspaces = CreateRunspacesWhenContainerParameterSpecified();
+                        remoteRunspaces = CreateRunspacesWhenContainerParameterSpecified(DoNotUseWindowsPowerShell);
                     }
                     break;
 
@@ -603,7 +603,7 @@ namespace Microsoft.PowerShell.Commands
         /// It now supports PSSession based on VM/container connection info as well.
         /// </summary>
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly")]
-        private List<RemoteRunspace> CreateRunspacesWhenRunspaceParameterSpecified()
+        private List<RemoteRunspace> CreateRunspacesWhenRunspaceParameterSpecified(bool doNotUseWindowsPowerShell)
         {
             List<RemoteRunspace> remoteRunspaces = new List<RemoteRunspace>();
 
@@ -636,7 +636,7 @@ namespace Microsoft.PowerShell.Commands
                         else if (remoteRunspace.ConnectionInfo is ContainerConnectionInfo)
                         {
                             ContainerConnectionInfo newContainerConnectionInfo = remoteRunspace.ConnectionInfo.InternalCopy() as ContainerConnectionInfo;
-                            newContainerConnectionInfo.CreateContainerProcess();
+                            newContainerConnectionInfo.CreateContainerProcess(doNotUseWindowsPowerShell);
                             newConnectionInfo = newContainerConnectionInfo;
                         }
                         else
@@ -985,7 +985,7 @@ namespace Microsoft.PowerShell.Commands
         /// <summary>
         /// Creates the remote runspace objects when the ContainerId parameter is specified
         /// </summary>
-        private List<RemoteRunspace> CreateRunspacesWhenContainerParameterSpecified()
+        private List<RemoteRunspace> CreateRunspacesWhenContainerParameterSpecified(bool doNotUseWindowsPowerShell)
         {
             int index = 0;
             List<string> resolvedNameList = new List<string>();
@@ -1011,11 +1011,11 @@ namespace Microsoft.PowerShell.Commands
                     // Hyper-V container uses Hype-V socket as transport.
                     // Windows Server container uses named pipe as transport.
                     //
-                    connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(input, RunAsAdministrator.IsPresent, this.ConfigurationName);
+                    connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(input, RunAsAdministrator.IsPresent, this.ConfigurationName, doNotUseWindowsPowerShell);
 
                     resolvedNameList.Add(connectionInfo.ComputerName);
 
-                    connectionInfo.CreateContainerProcess();
+                    connectionInfo.CreateContainerProcess(connectionInfo.DoNotUseWindowsPowerShell);
 
                     runspace = new RemoteRunspace(Utils.GetTypeTableFromExecutionContextTLS(),
                         connectionInfo, this.Host, null, rsName, rsId);

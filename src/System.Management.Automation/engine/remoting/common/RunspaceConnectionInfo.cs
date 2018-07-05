@@ -2799,6 +2799,11 @@ namespace System.Management.Automation.Runspaces
         /// </summary>
         internal ContainerProcess ContainerProc { get; set; }
 
+        /// <summary>
+        /// Whether Windows PowerShell should not be used as a default.
+        /// </summary>
+        internal bool DoNotUseWindowsPowerShell { get; private set; }
+
         #endregion
 
         #region Overrides
@@ -2861,7 +2866,7 @@ namespace System.Management.Automation.Runspaces
 
         internal override RunspaceConnectionInfo InternalCopy()
         {
-            ContainerConnectionInfo newCopy = new ContainerConnectionInfo(ContainerProc);
+            ContainerConnectionInfo newCopy = new ContainerConnectionInfo(ContainerProc, DoNotUseWindowsPowerShell);
             return newCopy;
         }
 
@@ -2892,7 +2897,7 @@ namespace System.Management.Automation.Runspaces
         /// Creates a connection info instance used to create a runspace on target container.
         /// </summary>
         internal ContainerConnectionInfo(
-            ContainerProcess containerProc)
+            ContainerProcess containerProc, bool doNotUseWindowsPowerShell)
             : base()
         {
             ContainerProc = containerProc;
@@ -2900,6 +2905,7 @@ namespace System.Management.Automation.Runspaces
             AuthenticationMechanism = AuthenticationMechanism.Default;
             Credential = null;
             OpenTimeout = _defaultOpenTimeout;
+            DoNotUseWindowsPowerShell = doNotUseWindowsPowerShell;
         }
 
         #endregion
@@ -2912,19 +2918,19 @@ namespace System.Management.Automation.Runspaces
         public static ContainerConnectionInfo CreateContainerConnectionInfo(
             string containerId,
             bool runAsAdmin,
-            string configurationName)
+            string configurationName, bool doNotUseWindowsPowerShell)
         {
             ContainerProcess containerProc = new ContainerProcess(containerId, null, 0, runAsAdmin, configurationName);
 
-            return new ContainerConnectionInfo(containerProc);
+            return new ContainerConnectionInfo(containerProc, doNotUseWindowsPowerShell);
         }
 
         /// <summary>
         /// Create process inside container.
         /// </summary>
-        public void CreateContainerProcess()
+        public void CreateContainerProcess(bool doNotUseWindowsPowerShell)
         {
-            ContainerProc.CreateContainerProcess();
+            ContainerProc.CreateContainerProcess(doNotUseWindowsPowerShell);
         }
 
         /// <summary>
@@ -3097,9 +3103,9 @@ namespace System.Management.Automation.Runspaces
         /// <summary>
         /// Create process inside container.
         /// </summary>
-        public void CreateContainerProcess()
+        public void CreateContainerProcess(bool doNotUseWindowsPowerShell)
         {
-            RunOnMTAThread(CreateContainerProcessInternal);
+            RunOnMTAThread(() => CreateContainerProcessInternal(doNotUseWindowsPowerShell));
 
             //
             // Report error. More error reporting will come later.
@@ -3181,7 +3187,7 @@ namespace System.Management.Automation.Runspaces
         /// <summary>
         /// Create process inside container.
         /// </summary>
-        private void CreateContainerProcessInternal()
+        private void CreateContainerProcessInternal(bool doNotUseWindowsPowerShell)
         {
             uint result;
             string cmd;
@@ -3204,24 +3210,21 @@ namespace System.Management.Automation.Runspaces
                 }
                 else
                 {
-                    //
                     // Hyper-V container (i.e., RuntimeId is not empty) uses Hyper-V socket transport.
                     // Windows Server container (i.e., RuntimeId is empty) uses named pipe transport for now.
-                    // This code executes `powershell.exe` as it exists in the container which currently is
-                    // expected to be Windows PowerShell as it's inbox in the container.
-                    //
-                    cmd = string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                        @"{{""CommandLine"": ""powershell.exe {0} -NoLogo {1}"",""RestrictedToken"": {2}}}",
-                        (RuntimeId != Guid.Empty) ? "-so -NoProfile" : "-NamedPipeServerMode",
+                    // For backwards compatibilty, default to `powershell.exe`.
+                    var executabeName = doNotUseWindowsPowerShell ? "pwsh.exe" : "powershell.exe";
+
+                    cmd = string.Format(CultureInfo.InvariantCulture,
+                        @"{{""CommandLine"": ""{0} {1} -NoLogo {2}"",""RestrictedToken"": {3}}}",
+                        executabeName, (RuntimeId != Guid.Empty) ? "-so -NoProfile" : "-NamedPipeServerMode",
                         String.IsNullOrEmpty(ConfigurationName) ? String.Empty : String.Concat("-Config ", ConfigurationName),
                         (RunAsAdmin) ? "false" : "true");
 
                     HCS_PROCESS_INFORMATION ProcessInformation = new HCS_PROCESS_INFORMATION();
                     IntPtr Process = IntPtr.Zero;
 
-                    //
                     // Create PowerShell process inside the container.
-                    //
                     result = HcsCreateProcess(ComputeSystem, cmd, ref ProcessInformation, ref Process, ref resultString);
                     if (result != 0)
                     {
