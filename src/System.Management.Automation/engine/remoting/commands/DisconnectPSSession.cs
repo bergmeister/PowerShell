@@ -113,15 +113,9 @@ namespace Microsoft.PowerShell.Commands
         private PSSessionOption _sessionOption;
 
         /// <summary>
-        /// Overriding to suppress this parameter
+        /// Overriding to suppress this parameter that gets inherited from <see cref="PSRemotingBaseCmdlet.ContainerId"/>.
         /// </summary>
-        public override string[] ContainerId
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override string[] ContainerId => null;
 
         /// <summary>
         /// Overriding to suppress this parameter

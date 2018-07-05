@@ -548,8 +548,8 @@ namespace Microsoft.PowerShell.Commands
         /// Do not connect to Windows PowerShell in the container, which is the default.
         /// </summary>
         [Parameter(ValueFromPipelineByPropertyName = true,
-                   ParameterSetName = InvokeCommandCommand.ContainerIdParameterSet)]
-        public SwitchParameter DoNotUseWindowsPowerShell { get; set; }
+                   ParameterSetName = PSRemotingBaseCmdlet.ContainerIdParameterSet)]
+        public virtual SwitchParameter DoNotUseWindowsPowerShell { get; set; }
 
         /// <summary>
         /// When set, PowerShell process inside container will be launched with
