@@ -2799,11 +2799,6 @@ namespace System.Management.Automation.Runspaces
         /// </summary>
         internal ContainerProcess ContainerProc { get; set; }
 
-        /// <summary>
-        /// Whether Windows PowerShell should not be used as a default.
-        /// </summary>
-        internal bool DoNotUseWindowsPowerShell { get; private set; }
-
         #endregion
 
         #region Overrides
@@ -2866,7 +2861,7 @@ namespace System.Management.Automation.Runspaces
 
         internal override RunspaceConnectionInfo InternalCopy()
         {
-            ContainerConnectionInfo newCopy = new ContainerConnectionInfo(ContainerProc, DoNotUseWindowsPowerShell);
+            ContainerConnectionInfo newCopy = new ContainerConnectionInfo(ContainerProc);
             return newCopy;
         }
 
@@ -2897,7 +2892,7 @@ namespace System.Management.Automation.Runspaces
         /// Creates a connection info instance used to create a runspace on target container.
         /// </summary>
         internal ContainerConnectionInfo(
-            ContainerProcess containerProc, bool doNotUseWindowsPowerShell)
+            ContainerProcess containerProc)
             : base()
         {
             ContainerProc = containerProc;
@@ -2905,7 +2900,6 @@ namespace System.Management.Automation.Runspaces
             AuthenticationMechanism = AuthenticationMechanism.Default;
             Credential = null;
             OpenTimeout = _defaultOpenTimeout;
-            DoNotUseWindowsPowerShell = doNotUseWindowsPowerShell;
         }
 
         #endregion
@@ -2918,11 +2912,11 @@ namespace System.Management.Automation.Runspaces
         public static ContainerConnectionInfo CreateContainerConnectionInfo(
             string containerId,
             bool runAsAdmin,
-            string configurationName, bool doNotUseWindowsPowerShell)
+            string configurationName)
         {
             ContainerProcess containerProc = new ContainerProcess(containerId, null, 0, runAsAdmin, configurationName);
 
-            return new ContainerConnectionInfo(containerProc, doNotUseWindowsPowerShell);
+            return new ContainerConnectionInfo(containerProc);
         }
 
         /// <summary>

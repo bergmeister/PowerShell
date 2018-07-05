@@ -1737,7 +1737,7 @@ namespace Microsoft.PowerShell.Commands
         /// Creates helper objects with the command for the specified
         /// container IDs or names.
         /// </summary>
-        protected virtual void CreateHelpersForSpecifiedContainerSession(bool doNotUseWindowsPowerShell)
+        protected virtual void CreateHelpersForSpecifiedContainerSession()
         {
             List<string> resolvedNameList = new List<string>();
 
@@ -1759,11 +1759,11 @@ namespace Microsoft.PowerShell.Commands
                     // Hyper-V container uses Hype-V socket as transport.
                     // Windows Server container uses named pipe as transport.
                     //
-                    connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(input, RunAsAdministrator.IsPresent, this.ConfigurationName, doNotUseWindowsPowerShell);
+                    connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(input, RunAsAdministrator.IsPresent, this.ConfigurationName);
 
                     resolvedNameList.Add(connectionInfo.ComputerName);
 
-                    connectionInfo.CreateContainerProcess(doNotUseWindowsPowerShell);
+                    connectionInfo.CreateContainerProcess(DoNotUseWindowsPowerShell);
 
                     remoteRunspace = new RemoteRunspace(Utils.GetTypeTableFromExecutionContextTLS(),
                         connectionInfo, this.Host, null, null, -1);
@@ -2092,7 +2092,7 @@ namespace Microsoft.PowerShell.Commands
                 case PSExecutionCmdlet.ContainerIdParameterSet:
                 case PSExecutionCmdlet.FilePathContainerIdParameterSet:
                     {
-                        CreateHelpersForSpecifiedContainerSession(this.DoNotUseWindowsPowerShell);
+                        CreateHelpersForSpecifiedContainerSession();
                     }
                     break;
             }

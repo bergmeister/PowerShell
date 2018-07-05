@@ -319,7 +319,7 @@ namespace Microsoft.PowerShell.Commands
                     break;
 
                 case ContainerIdParameterSet:
-                    remoteRunspace = GetRunspaceForContainerSession(DoNotUseWindowsPowerShell);
+                    remoteRunspace = GetRunspaceForContainerSession();
                     break;
 
                 case SSHHostParameterSet:
@@ -1201,7 +1201,7 @@ namespace Microsoft.PowerShell.Commands
         /// <summary>
         /// Create runspace for container session.
         /// </summary>
-        private RemoteRunspace GetRunspaceForContainerSession(bool doNotUseWindowsPowerShell)
+        private RemoteRunspace GetRunspaceForContainerSession()
         {
             RemoteRunspace remoteRunspace = null;
 
@@ -1215,9 +1215,9 @@ namespace Microsoft.PowerShell.Commands
                 // Hyper-V container uses Hype-V socket as transport.
                 // Windows Server container uses named pipe as transport.
                 //
-                connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(ContainerId, RunAsAdministrator.IsPresent, this.ConfigurationName, doNotUseWindowsPowerShell);
+                connectionInfo = ContainerConnectionInfo.CreateContainerConnectionInfo(ContainerId, RunAsAdministrator.IsPresent, this.ConfigurationName);
 
-                connectionInfo.CreateContainerProcess(connectionInfo.DoNotUseWindowsPowerShell);
+                connectionInfo.CreateContainerProcess(DoNotUseWindowsPowerShell);
                 remoteRunspace = CreateTemporaryRemoteRunspaceForPowerShellDirect(this.Host, connectionInfo);
             }
             catch (InvalidOperationException e)
