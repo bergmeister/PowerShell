@@ -855,7 +855,7 @@ namespace System.Management.Automation.Runspaces.Internal
         /// <remarks>
         /// Any updates to the value of this property must be done before the RunspacePool is opened
         /// </remarks>
-        internal ApartmentState ApartmentState { get; set; } = Runspace.DefaultApartmentState;
+        public ApartmentState ApartmentState { get; set; } = Runspace.DefaultApartmentState;
 #endif
 
         /// <summary>

@@ -135,6 +135,7 @@ namespace System.Management.Automation
 
     #region ApartmentState
 
+#if CORECLR
     internal enum ApartmentState
     {
         //
@@ -150,6 +151,8 @@ namespace System.Management.Automation
         //     The System.Threading.Thread.ApartmentState property has not been set.
         Unknown = 2
     }
+
+#endif
 
     #endregion ApartmentState
 }

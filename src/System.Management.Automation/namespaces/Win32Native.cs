@@ -28,6 +28,7 @@ namespace Microsoft.PowerShell.Commands.Internal
     using BOOL = System.Int32;
     using DWORD = System.UInt32;
     using ULONG = System.UInt32;
+    using Microsoft.Win32.SafeHandles;
 
     /**
      * Win32 encapsulation for MSCORLIB.
@@ -673,12 +674,14 @@ namespace Microsoft.PowerShell.Commands.Internal
         [SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage")]
         internal static extern int RegDeleteKey(SafeRegistryHandle hKey, String lpSubKey);
 
+#if CORECLR
         [DllImport(ADVAPI32, CharSet = CharSet.Auto, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.Machine)]
         // Suppressed because there is no way for arbitrary data to be passed.
         [SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage")]
         internal static extern int RegDeleteKeyTransacted(SafeRegistryHandle hKey, String lpSubKey, int samDesired,
                                 DWORD reserved, SafeTransactionHandle hTransaction, IntPtr pExtendedParameter);
+#endif
 
         [DllImport(ADVAPI32, CharSet = CharSet.Auto, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.Machine)]
@@ -717,6 +720,7 @@ namespace Microsoft.PowerShell.Commands.Internal
         internal static extern int RegOpenKeyEx(SafeRegistryHandle hKey, String lpSubKey,
                     int ulOptions, int samDesired, out SafeRegistryHandle hkResult);
 
+#if CORECLR
         [DllImport(PinvokeDllNames.RegOpenKeyTransactedDllName, CharSet = CharSet.Auto, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.Machine)]
         // Suppressed because there is no way for arbitrary data to be passed.
@@ -724,6 +728,7 @@ namespace Microsoft.PowerShell.Commands.Internal
         internal static extern int RegOpenKeyTransacted(SafeRegistryHandle hKey, String lpSubKey,
                     int ulOptions, int samDesired, out SafeRegistryHandle hkResult,
                     SafeTransactionHandle hTransaction, IntPtr pExtendedParameter);
+#endif
 
         [DllImport(PinvokeDllNames.RegQueryInfoKeyDllName, CharSet = CharSet.Auto, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.None)]
@@ -804,6 +809,7 @@ namespace Microsoft.PowerShell.Commands.Internal
         internal static extern int RegSetValueEx(SafeRegistryHandle hKey, String lpValueName,
                     int Reserved, RegistryValueKind dwType, String lpData, int cbData);
 
+#if CORECLR
         [DllImport(PinvokeDllNames.RegCreateKeyTransactedDllName, CharSet = CharSet.Auto, BestFitMapping = false)]
         [ResourceExposure(ResourceScope.Machine)]
         // Suppressed because there is no way for arbitrary data to be passed.
@@ -813,6 +819,7 @@ namespace Microsoft.PowerShell.Commands.Internal
                     int samDesigner, SECURITY_ATTRIBUTES lpSecurityAttributes,
                     out SafeRegistryHandle hkResult, out int lpdwDisposition,
                     SafeTransactionHandle hTransaction, IntPtr pExtendedParameter);
+#endif
 
         private const int FORMAT_MESSAGE_IGNORE_INSERTS = 0x00000200;
         private const int FORMAT_MESSAGE_FROM_SYSTEM = 0x00001000;

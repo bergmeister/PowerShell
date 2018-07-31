@@ -3740,12 +3740,12 @@ namespace System.Management.Automation.Runspaces
             }
 
 #if !CORECLR // CustomPSSnapIn Not Supported On CSS.
-            if (!String.IsNullOrEmpty(psSnapInInfo.CustomPSSnapInType))
-            {
-                LoadCustomPSSnapIn(psSnapInInfo);
-                warning = null;
-                return psSnapInInfo;
-            }
+            //if (!String.IsNullOrEmpty(psSnapInInfo.CustomPSSnapInType))
+            //{
+            //    LoadCustomPSSnapIn(psSnapInInfo);
+            //    warning = null;
+            //    return psSnapInInfo;
+            //}
 #endif
             Assembly assembly = null;
             string helpFile = null;
@@ -3895,134 +3895,134 @@ namespace System.Management.Automation.Runspaces
         }
 
 #if !CORECLR // CustomPSSnapIn Not Supported On CSS.
-        /// <summary>
-        /// This is a "proxy" snapin that loads a subset of cmdlets from another snapin...
-        /// </summary>
-        /// <remarks>
-        /// CustomPSSnapIn derives from System.Configuration.Install, which is not in CoreCLR.
-        /// So CustomPSSnapIn is not supported on CSS.
-        /// </remarks>
-        /// <param name="psSnapInInfo">The snapin to examine.</param>
-        private void LoadCustomPSSnapIn(PSSnapInInfo psSnapInInfo)
-        {
-            if (psSnapInInfo == null)
-                return;
+        ///// <summary>
+        ///// This is a "proxy" snapin that loads a subset of cmdlets from another snapin...
+        ///// </summary>
+        ///// <remarks>
+        ///// CustomPSSnapIn derives from System.Configuration.Install, which is not in CoreCLR.
+        ///// So CustomPSSnapIn is not supported on CSS.
+        ///// </remarks>
+        ///// <param name="psSnapInInfo">The snapin to examine.</param>
+        //private void LoadCustomPSSnapIn(PSSnapInInfo psSnapInInfo)
+        //{
+        //    if (psSnapInInfo == null)
+        //        return;
 
-            if (String.IsNullOrEmpty(psSnapInInfo.CustomPSSnapInType))
-            {
-                return;
-            }
+        //    if (String.IsNullOrEmpty(psSnapInInfo.CustomPSSnapInType))
+        //    {
+        //        return;
+        //    }
 
-            Dictionary<string, SessionStateCmdletEntry> cmdlets = null;
-            Dictionary<string, SessionStateProviderEntry> providers = null;
-            Assembly assembly = null;
+        //    Dictionary<string, SessionStateCmdletEntry> cmdlets = null;
+        //    Dictionary<string, SessionStateProviderEntry> providers = null;
+        //    Assembly assembly = null;
 
-            s_PSSnapInTracer.WriteLine("Loading assembly for mshsnapin {0}", psSnapInInfo.Name);
+        //    s_PSSnapInTracer.WriteLine("Loading assembly for mshsnapin {0}", psSnapInInfo.Name);
 
-            assembly = PSSnapInHelpers.LoadPSSnapInAssembly(psSnapInInfo, out cmdlets, out providers);
+        //    assembly = PSSnapInHelpers.LoadPSSnapInAssembly(psSnapInInfo, out cmdlets, out providers);
 
-            if (assembly == null)
-            {
-                s_PSSnapInTracer.TraceError("Loading assembly for mshsnapin {0} failed", psSnapInInfo.Name);
-                return;
-            }
+        //    if (assembly == null)
+        //    {
+        //        s_PSSnapInTracer.TraceError("Loading assembly for mshsnapin {0} failed", psSnapInInfo.Name);
+        //        return;
+        //    }
 
-            CustomPSSnapIn customPSSnapIn = null;
-            try
-            {
-                Type type = assembly.GetType(psSnapInInfo.CustomPSSnapInType, true);
+        //    CustomPSSnapIn customPSSnapIn = null;
+        //    try
+        //    {
+        //        Type type = assembly.GetType(psSnapInInfo.CustomPSSnapInType, true);
 
-                if (type != null)
-                {
-                    customPSSnapIn = (CustomPSSnapIn)assembly.CreateInstance(psSnapInInfo.CustomPSSnapInType);
-                }
+        //        if (type != null)
+        //        {
+        //            customPSSnapIn = (CustomPSSnapIn)assembly.CreateInstance(psSnapInInfo.CustomPSSnapInType);
+        //        }
 
-                s_PSSnapInTracer.WriteLine("Loading assembly for mshsnapin {0} succeeded", psSnapInInfo.Name);
-            }
-            catch (TypeLoadException tle)
-            {
-                throw new PSSnapInException(psSnapInInfo.Name, tle.Message);
-            }
-            catch (ArgumentException ae)
-            {
-                throw new PSSnapInException(psSnapInInfo.Name, ae.Message);
-            }
-            catch (MissingMethodException mme)
-            {
-                throw new PSSnapInException(psSnapInInfo.Name, mme.Message);
-            }
-            catch (InvalidCastException ice)
-            {
-                throw new PSSnapInException(psSnapInInfo.Name, ice.Message);
-            }
-            catch (TargetInvocationException tie)
-            {
-                if (tie.InnerException != null)
-                {
-                    throw new PSSnapInException(psSnapInInfo.Name, tie.InnerException.Message);
-                }
+        //        s_PSSnapInTracer.WriteLine("Loading assembly for mshsnapin {0} succeeded", psSnapInInfo.Name);
+        //    }
+        //    catch (TypeLoadException tle)
+        //    {
+        //        throw new PSSnapInException(psSnapInInfo.Name, tle.Message);
+        //    }
+        //    catch (ArgumentException ae)
+        //    {
+        //        throw new PSSnapInException(psSnapInInfo.Name, ae.Message);
+        //    }
+        //    catch (MissingMethodException mme)
+        //    {
+        //        throw new PSSnapInException(psSnapInInfo.Name, mme.Message);
+        //    }
+        //    catch (InvalidCastException ice)
+        //    {
+        //        throw new PSSnapInException(psSnapInInfo.Name, ice.Message);
+        //    }
+        //    catch (TargetInvocationException tie)
+        //    {
+        //        if (tie.InnerException != null)
+        //        {
+        //            throw new PSSnapInException(psSnapInInfo.Name, tie.InnerException.Message);
+        //        }
 
-                throw new PSSnapInException(psSnapInInfo.Name, tie.Message);
-            }
+        //        throw new PSSnapInException(psSnapInInfo.Name, tie.Message);
+        //    }
 
-            MergeCustomPSSnapIn(psSnapInInfo, customPSSnapIn);
-        }
+        //    MergeCustomPSSnapIn(psSnapInInfo, customPSSnapIn);
+        //}
 
-        private void MergeCustomPSSnapIn(PSSnapInInfo psSnapInInfo, CustomPSSnapIn customPSSnapIn)
-        {
-            if (psSnapInInfo == null || customPSSnapIn == null)
-                return;
+        //private void MergeCustomPSSnapIn(PSSnapInInfo psSnapInInfo, CustomPSSnapIn customPSSnapIn)
+        //{
+        //    if (psSnapInInfo == null || customPSSnapIn == null)
+        //        return;
 
-            s_PSSnapInTracer.WriteLine("Merging configuration from custom mshsnapin {0}", psSnapInInfo.Name);
+        //    s_PSSnapInTracer.WriteLine("Merging configuration from custom mshsnapin {0}", psSnapInInfo.Name);
 
-            if (customPSSnapIn.Cmdlets != null)
-            {
-                foreach (CmdletConfigurationEntry entry in customPSSnapIn.Cmdlets)
-                {
-                    SessionStateCmdletEntry cmdlet = new SessionStateCmdletEntry(entry.Name, entry.ImplementingType, entry.HelpFileName);
-                    cmdlet.SetPSSnapIn(psSnapInInfo);
-                    this.Commands.Add(cmdlet);
-                }
-            }
+        //    if (customPSSnapIn.Cmdlets != null)
+        //    {
+        //        foreach (CmdletConfigurationEntry entry in customPSSnapIn.Cmdlets)
+        //        {
+        //            SessionStateCmdletEntry cmdlet = new SessionStateCmdletEntry(entry.Name, entry.ImplementingType, entry.HelpFileName);
+        //            cmdlet.SetPSSnapIn(psSnapInInfo);
+        //            this.Commands.Add(cmdlet);
+        //        }
+        //    }
 
-            if (customPSSnapIn.Providers != null)
-            {
-                foreach (ProviderConfigurationEntry entry in customPSSnapIn.Providers)
-                {
-                    SessionStateProviderEntry provider = new SessionStateProviderEntry(entry.Name, entry.ImplementingType, entry.HelpFileName);
-                    provider.SetPSSnapIn(psSnapInInfo);
-                    this.Providers.Add(provider);
-                }
-            }
+        //    if (customPSSnapIn.Providers != null)
+        //    {
+        //        foreach (ProviderConfigurationEntry entry in customPSSnapIn.Providers)
+        //        {
+        //            SessionStateProviderEntry provider = new SessionStateProviderEntry(entry.Name, entry.ImplementingType, entry.HelpFileName);
+        //            provider.SetPSSnapIn(psSnapInInfo);
+        //            this.Providers.Add(provider);
+        //        }
+        //    }
 
-            if (customPSSnapIn.Types != null)
-            {
-                foreach (TypeConfigurationEntry entry in customPSSnapIn.Types)
-                {
-                    string path = Path.Combine(psSnapInInfo.ApplicationBase, entry.FileName);
+        //    if (customPSSnapIn.Types != null)
+        //    {
+        //        foreach (TypeConfigurationEntry entry in customPSSnapIn.Types)
+        //        {
+        //            string path = Path.Combine(psSnapInInfo.ApplicationBase, entry.FileName);
 
-                    SessionStateTypeEntry typeEntry = new SessionStateTypeEntry(path);
-                    typeEntry.SetPSSnapIn(psSnapInInfo);
-                    this.Types.Add(typeEntry);
-                }
-            }
+        //            SessionStateTypeEntry typeEntry = new SessionStateTypeEntry(path);
+        //            typeEntry.SetPSSnapIn(psSnapInInfo);
+        //            this.Types.Add(typeEntry);
+        //        }
+        //    }
 
-            if (customPSSnapIn.Formats != null)
-            {
-                foreach (FormatConfigurationEntry entry in customPSSnapIn.Formats)
-                {
-                    string path = Path.Combine(psSnapInInfo.ApplicationBase, entry.FileName);
+        //    if (customPSSnapIn.Formats != null)
+        //    {
+        //        foreach (FormatConfigurationEntry entry in customPSSnapIn.Formats)
+        //        {
+        //            string path = Path.Combine(psSnapInInfo.ApplicationBase, entry.FileName);
 
-                    SessionStateFormatEntry formatEntry = new SessionStateFormatEntry(path);
-                    formatEntry.SetPSSnapIn(psSnapInInfo);
-                    this.Formats.Add(formatEntry);
-                }
-            }
+        //            SessionStateFormatEntry formatEntry = new SessionStateFormatEntry(path);
+        //            formatEntry.SetPSSnapIn(psSnapInInfo);
+        //            this.Formats.Add(formatEntry);
+        //        }
+        //    }
 
-            SessionStateAssemblyEntry assemblyEntry = new SessionStateAssemblyEntry(psSnapInInfo.AssemblyName, psSnapInInfo.AbsoluteModulePath);
+        //    SessionStateAssemblyEntry assemblyEntry = new SessionStateAssemblyEntry(psSnapInInfo.AssemblyName, psSnapInInfo.AbsoluteModulePath);
 
-            this.Assemblies.Add(assemblyEntry);
-        }
+        //    this.Assemblies.Add(assemblyEntry);
+        //}
 #endif
 
         [SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFrom")]
@@ -5318,10 +5318,10 @@ end
                 {"Wait-Job",                          new SessionStateCmdletEntry("Wait-Job", typeof(WaitJobCommand), helpFile) },
                 {"Where-Object",                      new SessionStateCmdletEntry("Where-Object", typeof(WhereObjectCommand), helpFile) },
 #if !CORECLR
-                {"Add-PSSnapin",                      new SessionStateCmdletEntry("Add-PSSnapin", typeof(AddPSSnapinCommand), helpFile) },
-                {"Export-Console",                    new SessionStateCmdletEntry("Export-Console", typeof(ExportConsoleCommand), helpFile) },
-                {"Get-PSSnapin",                      new SessionStateCmdletEntry("Get-PSSnapin", typeof(GetPSSnapinCommand), helpFile) },
-                {"Remove-PSSnapin",                   new SessionStateCmdletEntry("Remove-PSSnapin", typeof(RemovePSSnapinCommand), helpFile) },
+                //{"Add-PSSnapin",                      new SessionStateCmdletEntry("Add-PSSnapin", typeof(AddPSSnapinCommand), helpFile) },
+                //{"Export-Console",                    new SessionStateCmdletEntry("Export-Console", typeof(ExportConsoleCommand), helpFile) },
+                //{"Get-PSSnapin",                      new SessionStateCmdletEntry("Get-PSSnapin", typeof(GetPSSnapinCommand), helpFile) },
+                //{"Remove-PSSnapin",                   new SessionStateCmdletEntry("Remove-PSSnapin", typeof(RemovePSSnapinCommand), helpFile) },
                 {"Resume-Job",                        new SessionStateCmdletEntry("Resume-Job", typeof(ResumeJobCommand), helpFile) },
                 {"Suspend-Job",                       new SessionStateCmdletEntry("Suspend-Job", typeof(SuspendJobCommand), helpFile) },
 #endif

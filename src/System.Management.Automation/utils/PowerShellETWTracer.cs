@@ -7,6 +7,7 @@ using System.Management.Automation.Runspaces;
 using System.Text;
 using System.Diagnostics.Eventing;
 using System.Management.Automation.Internal;
+//using EventProvider = ; // to avoid clash with System.Core.EventProvider
 
 namespace System.Management.Automation.Tracing
 {

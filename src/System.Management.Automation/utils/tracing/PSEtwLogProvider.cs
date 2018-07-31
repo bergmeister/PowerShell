@@ -7,6 +7,8 @@ using System.Management.Automation.Internal;
 using System.Text;
 using System.Collections.Generic;
 
+using EventProvider = System.Diagnostics.Eventing.EventProvider;
+
 namespace System.Management.Automation.Tracing
 {
     /// <summary>

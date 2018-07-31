@@ -11,6 +11,7 @@ namespace System.Management.Automation.Internal
 {
     internal static class ModuleUtils
     {
+#if CORECLR
         // Default option for local file system enumeration:
         //  - Ignore files/directories when access is denied;
         //  - Search top directory only.
@@ -23,6 +24,8 @@ namespace System.Management.Automation.Internal
         //    "A "large" buffer, for example, would be 16K. Typical is 4K."
         private readonly static System.IO.EnumerationOptions s_uncPathEnumerationOptions =
                                         new System.IO.EnumerationOptions() { AttributesToSkip = 0, BufferSize = 16384 };
+#endif
+
 
         /// <summary>
         /// Check if a directory could be a module folder.
@@ -69,8 +72,10 @@ namespace System.Management.Automation.Internal
         internal static IEnumerable<string> GetAllAvailableModuleFiles(string topDirectoryToCheck)
         {
             if (!Directory.Exists(topDirectoryToCheck)) { yield break; }
-            
+
+#if CORECLR
             var options = Utils.PathIsUnc(topDirectoryToCheck) ? s_uncPathEnumerationOptions : s_defaultEnumerationOptions;
+#endif
             Queue<string> directoriesToCheck = new Queue<string>();
             directoriesToCheck.Enqueue(topDirectoryToCheck);
 
@@ -79,7 +84,11 @@ namespace System.Management.Automation.Internal
                 string directoryToCheck = directoriesToCheck.Dequeue();
                 try
                 {
+#if CORECLR
                     string[] subDirectories = Directory.GetDirectories(directoryToCheck, "*", options);
+#else
+                    string[] subDirectories = Directory.GetDirectories(directoryToCheck, "*");
+#endif
                     foreach (string toAdd in subDirectories)
                     {
                         if (IsPossibleModuleDirectory(toAdd))
@@ -90,8 +99,11 @@ namespace System.Management.Automation.Internal
                 }
                 catch (IOException) { }
                 catch (UnauthorizedAccessException) { }
-
+#if CORECLR
                 string[] files = Directory.GetFiles(directoryToCheck, "*", options);
+#else
+                string[] files = Directory.GetFiles(directoryToCheck, "*");
+#endif
                 foreach (string moduleFile in files)
                 {
                     foreach (string ext in ModuleIntrinsics.PSModuleExtensions)
@@ -247,8 +259,9 @@ namespace System.Management.Automation.Internal
         internal static IEnumerable<string> GetDefaultAvailableModuleFiles(string topDirectoryToCheck)
         {
             if (!Directory.Exists(topDirectoryToCheck)) { yield break; }
-
+#if CORECLR
             var options = Utils.PathIsUnc(topDirectoryToCheck) ? s_uncPathEnumerationOptions : s_defaultEnumerationOptions;
+#endif
             List<Version> versionDirectories = new List<Version>();
             LinkedList<string> directoriesToCheck = new LinkedList<string>();
             directoriesToCheck.AddLast(topDirectoryToCheck);
@@ -261,7 +274,12 @@ namespace System.Management.Automation.Internal
                 directoriesToCheck.RemoveFirst();
                 try
                 {
+#if CORECLR
                     subdirectories = Directory.GetDirectories(directoryToCheck, "*", options);
+#else
+                    subdirectories = Directory.GetDirectories(directoryToCheck, "*");
+#endif
+
                     ProcessPossibleVersionSubdirectories(subdirectories, versionDirectories);
                 }
                 catch (IOException) { subdirectories = Utils.EmptyArray<string>(); }
@@ -331,8 +349,12 @@ namespace System.Management.Automation.Internal
 
             if (!string.IsNullOrWhiteSpace(moduleBase) && Directory.Exists(moduleBase))
             {
+#if CORECLR
                 var options = Utils.PathIsUnc(moduleBase) ? s_uncPathEnumerationOptions : s_defaultEnumerationOptions;
                 string[] subdirectories = Directory.GetDirectories(moduleBase, "*", options);
+#else
+                string[] subdirectories = Directory.GetDirectories(moduleBase, "*");
+#endif
                 ProcessPossibleVersionSubdirectories(subdirectories, versionFolders);
             }
 

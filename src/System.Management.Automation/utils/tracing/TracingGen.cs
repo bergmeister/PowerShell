@@ -4,6 +4,8 @@
 using System.Diagnostics.Eventing;
 using System.Diagnostics.CodeAnalysis;
 
+using EventProvider = System.Diagnostics.Eventing.EventProvider;
+
 namespace System.Management.Automation.Tracing
 {
     /// <summary>

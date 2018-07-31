@@ -25,6 +25,7 @@ using TypeTable = System.Management.Automation.Runspaces.TypeTable;
 
 using System.Diagnostics;
 using Microsoft.Win32.SafeHandles;
+using System.Security.Principal;
 
 namespace System.Management.Automation
 {

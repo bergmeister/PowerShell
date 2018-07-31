@@ -5643,53 +5643,53 @@ namespace System.Management.Automation
 #if !CORECLR // PSMI Not Supported On CSS
         #region Win Blue Extensions
 
-        internal CimInstance AsPSPowerShellPipeline()
-        {
-            CimInstance c = InternalMISerializer.CreateCimInstance("PS_PowerShellPipeline");
-            CimProperty instanceIdProperty = InternalMISerializer.CreateCimProperty("InstanceId",
-                                                                                    this.InstanceId.ToString(),
-                                                                                    Microsoft.Management.Infrastructure.CimType.String);
-            c.CimInstanceProperties.Add(instanceIdProperty);
-            CimProperty isNestedProperty = InternalMISerializer.CreateCimProperty("IsNested",
-                                                                                  this.IsNested,
-                                                                                  Microsoft.Management.Infrastructure.CimType.Boolean);
-            c.CimInstanceProperties.Add(isNestedProperty);
+        //internal CimInstance AsPSPowerShellPipeline()
+        //{
+        //    CimInstance c = InternalMISerializer.CreateCimInstance("PS_PowerShellPipeline");
+        //    CimProperty instanceIdProperty = InternalMISerializer.CreateCimProperty("InstanceId",
+        //                                                                            this.InstanceId.ToString(),
+        //                                                                            Microsoft.Management.Infrastructure.CimType.String);
+        //    c.CimInstanceProperties.Add(instanceIdProperty);
+        //    CimProperty isNestedProperty = InternalMISerializer.CreateCimProperty("IsNested",
+        //                                                                          this.IsNested,
+        //                                                                          Microsoft.Management.Infrastructure.CimType.Boolean);
+        //    c.CimInstanceProperties.Add(isNestedProperty);
 
-            bool addToHistoryValue = false, noInputValue = false;
-            uint apartmentStateValue = 0;
-            if (_worker != null)
-            {
-                _worker.GetSettings(out addToHistoryValue, out noInputValue, out apartmentStateValue);
-            }
-            CimProperty addToHistoryProperty = InternalMISerializer.CreateCimProperty("AddToHistory",
-                                                                                      addToHistoryValue,
-                                                                                      Microsoft.Management.Infrastructure.CimType.Boolean);
-            c.CimInstanceProperties.Add(addToHistoryProperty);
-            CimProperty noInputProperty = InternalMISerializer.CreateCimProperty("NoInput",
-                                                                                 noInputValue,
-                                                                                 Microsoft.Management.Infrastructure.CimType.Boolean);
-            c.CimInstanceProperties.Add(noInputProperty);
-            CimProperty apartmentStateProperty = InternalMISerializer.CreateCimProperty("ApartmentState",
-                                                                                        apartmentStateValue,
-                                                                                        Microsoft.Management.Infrastructure.CimType.UInt32);
-            c.CimInstanceProperties.Add(apartmentStateProperty);
+        //    bool addToHistoryValue = false, noInputValue = false;
+        //    uint apartmentStateValue = 0;
+        //    if (_worker != null)
+        //    {
+        //        _worker.GetSettings(out addToHistoryValue, out noInputValue, out apartmentStateValue);
+        //    }
+        //    CimProperty addToHistoryProperty = InternalMISerializer.CreateCimProperty("AddToHistory",
+        //                                                                              addToHistoryValue,
+        //                                                                              Microsoft.Management.Infrastructure.CimType.Boolean);
+        //    c.CimInstanceProperties.Add(addToHistoryProperty);
+        //    CimProperty noInputProperty = InternalMISerializer.CreateCimProperty("NoInput",
+        //                                                                         noInputValue,
+        //                                                                         Microsoft.Management.Infrastructure.CimType.Boolean);
+        //    c.CimInstanceProperties.Add(noInputProperty);
+        //    CimProperty apartmentStateProperty = InternalMISerializer.CreateCimProperty("ApartmentState",
+        //                                                                                apartmentStateValue,
+        //                                                                                Microsoft.Management.Infrastructure.CimType.UInt32);
+        //    c.CimInstanceProperties.Add(apartmentStateProperty);
 
-            if (this.Commands.Commands.Count > 0)
-            {
-                List<CimInstance> commandInstances = new List<CimInstance>();
-                foreach (var command in this.Commands.Commands)
-                {
-                    commandInstances.Add(command.ToCimInstance());
-                }
+        //    if (this.Commands.Commands.Count > 0)
+        //    {
+        //        List<CimInstance> commandInstances = new List<CimInstance>();
+        //        foreach (var command in this.Commands.Commands)
+        //        {
+        //            commandInstances.Add(command.ToCimInstance());
+        //        }
 
-                CimProperty commandsProperty = InternalMISerializer.CreateCimProperty("Commands",
-                                                                                      commandInstances.ToArray(),
-                                                                                      Microsoft.Management.Infrastructure.CimType.ReferenceArray);
-                c.CimInstanceProperties.Add(commandsProperty);
-            }
+        //        CimProperty commandsProperty = InternalMISerializer.CreateCimProperty("Commands",
+        //                                                                              commandInstances.ToArray(),
+        //                                                                              Microsoft.Management.Infrastructure.CimType.ReferenceArray);
+        //        c.CimInstanceProperties.Add(commandsProperty);
+        //    }
 
-            return c;
-        }
+        //    return c;
+        //}
         #endregion Win Blue Extensions
 #endif
     }

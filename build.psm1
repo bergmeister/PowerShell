@@ -504,6 +504,7 @@ Fix steps:
         Output=$Output
         Runtime=$Runtime
         Configuration=$Configuration
+        Framework='net461'
         Verbose=$true
         SMAOnly=[bool]$SMAOnly
         PSModuleRestore=$PSModuleRestore
@@ -727,8 +728,8 @@ function New-PSOptions {
         [ValidateSet("Debug", "Release", "CodeCoverage", '')]
         [string]$Configuration,
 
-        [ValidateSet("netcoreapp2.1")]
-        [string]$Framework,
+        [ValidateSet("netcoreapp2.1", "net461")]
+        [string]$Framework = "netcoreapp2.1",
 
         # These are duplicated from Start-PSBuild
         # We do not use ValidateScript since we want tab completion
@@ -778,10 +779,7 @@ function New-PSOptions {
     $Top = [IO.Path]::Combine($PSScriptRoot, "src", $PowerShellDir)
     Write-Verbose "Top project directory is $Top"
 
-    if (-not $Framework) {
-        $Framework = "netcoreapp2.1"
-        Write-Verbose "Using framework '$Framework'"
-    }
+    Write-Verbose "Using framework '$Framework'"
 
     if (-not $Runtime) {
         if ($Environment.IsLinux) {

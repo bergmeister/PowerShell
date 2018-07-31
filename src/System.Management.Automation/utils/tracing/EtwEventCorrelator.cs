@@ -7,6 +7,8 @@ namespace System.Management.Automation.Tracing
     using System;
     using System.Diagnostics.Eventing;
 
+    using EventProvider = System.Diagnostics.Eventing.EventProvider;
+
     /// <summary>
     ///     An object that can be used to manage the ETW activity ID of the current thread.
     /// </summary>
@@ -59,7 +61,7 @@ namespace System.Management.Automation.Tracing
         ///     during activity correlation.</param>
         /// <param name="transferEvent">The <see cref="EventDescriptor" /> to use when logging transfer events
         ///     during activity correlation.</param>
-        public EtwEventCorrelator(EventProvider transferProvider, EventDescriptor transferEvent)
+        public EtwEventCorrelator(System.Diagnostics.Eventing.EventProvider transferProvider, EventDescriptor transferEvent)
         {
             if (transferProvider == null)
             {

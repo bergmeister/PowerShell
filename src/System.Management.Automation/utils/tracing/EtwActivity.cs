@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
 
+using EventProvider = System.Diagnostics.Eventing.EventProvider;
+
 namespace System.Management.Automation.Tracing
 {
     /// <summary>
