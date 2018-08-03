@@ -56,10 +56,10 @@ namespace Microsoft.PowerShell.Cmdletization
             ScriptWriter.s_xmlReaderSettings.ValidationFlags = XmlSchemaValidationFlags.ProcessIdentityConstraints |
                                                 XmlSchemaValidationFlags.ReportValidationWarnings;
             ScriptWriter.s_xmlReaderSettings.ValidationType = ValidationType.Schema;
-            string cmdletizationXsd = CmdletizationCoreResources.Xml_cmdletsOverObjectsXsd;
-            XmlReader cmdletizationSchemaReader = XmlReader.Create(new StringReader(cmdletizationXsd), ScriptWriter.s_xmlReaderSettings);
-            ScriptWriter.s_xmlReaderSettings.Schemas = new XmlSchemaSet();
-            ScriptWriter.s_xmlReaderSettings.Schemas.Add(null, cmdletizationSchemaReader);
+            //string cmdletizationXsd = CmdletizationCoreResources.Xml_cmdletsOverObjectsXsd;
+            //XmlReader cmdletizationSchemaReader = XmlReader.Create(new StringReader(cmdletizationXsd), ScriptWriter.s_xmlReaderSettings);
+            //ScriptWriter.s_xmlReaderSettings.Schemas = new XmlSchemaSet();
+            //ScriptWriter.s_xmlReaderSettings.Schemas.Add(null, cmdletizationSchemaReader);
             ScriptWriter.s_xmlReaderSettings.Schemas.XmlResolver = null; // do not fetch external documents
 #endif
         }
