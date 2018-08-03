@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
 using Dbg = System.Management.Automation.Diagnostics;
+#if CORECLR
+using ImTools;
+#endif
 
 //
 // Now define the set of commands for manipulating modules.
@@ -16,7 +19,7 @@ using Dbg = System.Management.Automation.Diagnostics;
 
 namespace Microsoft.PowerShell.Commands
 {
-    #region Module Specification class
+#region Module Specification class
 
     /// <summary>
     /// Represents module specification written in a module manifest (i.e. in RequiredModules member/field).
@@ -306,14 +309,44 @@ namespace Microsoft.PowerShell.Commands
         /// <returns>A hashcode that is always the same for any module specification with the same properties.</returns>
         public int GetHashCode(ModuleSpecification obj)
         {
+#if CORECLR
             if (obj == null)
             {
                 return 0;
             }
 
             return HashCode.Combine(obj.Name, obj.Guid, obj.RequiredVersion, obj.Version, obj.MaximumVersion);
+#else
+            int result = 0;
+
+            if (obj != null)
+            {
+                if (obj.Name != null)
+                {
+                    result = result ^ obj.Name.GetHashCode();
+                }
+                if (obj.Guid.HasValue)
+                {
+                    result = result ^ obj.Guid.GetHashCode();
+                }
+                if (obj.Version != null)
+                {
+                    result = result ^ obj.Version.GetHashCode();
+                }
+                if (obj.MaximumVersion != null)
+                {
+                    result = result ^ obj.MaximumVersion.GetHashCode();
+                }
+                if (obj.RequiredVersion != null)
+                {
+                    result = result ^ obj.RequiredVersion.GetHashCode();
+                }
+            }
+
+            return result;
+#endif
         }
     }
 
-    #endregion
+#endregion
 } // Microsoft.PowerShell.Commands

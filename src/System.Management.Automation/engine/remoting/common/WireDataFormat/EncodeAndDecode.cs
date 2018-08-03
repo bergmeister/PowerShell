@@ -2397,7 +2397,7 @@ namespace System.Management.Automation
                 // So just return the CurrentTimeZone.
 
 #if !CORECLR // TimeZone Not In CoreCLR
-                result.TimeZone = TimeZone.CurrentTimeZone;
+                result.TimeZone = TimeZoneInfo.Local;
 #endif
             }
 

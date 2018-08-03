@@ -198,7 +198,15 @@ namespace Microsoft.PowerShell.Commands
             IDictionary environmentTable = Environment.GetEnvironmentVariables();
             foreach (DictionaryEntry entry in environmentTable)
             {
-                if (!providerTable.TryAdd((string)entry.Key, entry))
+                bool duplicateKey = false;
+#if CORECLR
+                duplicateKey = !providerTable.TryAdd((string)entry.Key, entry)
+#else
+                try { providerTable.Add((string)entry.Key, entry); }
+                catch (ArgumentException) { duplicateKey = true; }
+#endif
+
+                if (duplicateKey)
                 {   // Windows only: duplicate key (variable name that differs only in case)
                     // NOTE: Even though this shouldn't happen, it can, e.g. when npm
                     //       creates duplicate environment variables that differ only in case -
@@ -253,7 +261,7 @@ namespace Microsoft.PowerShell.Commands
             return value;
         } // GetValueOfItem
 
-        #endregion protected members
+#endregion protected members
     } // EnvironmentProvider
 }
 

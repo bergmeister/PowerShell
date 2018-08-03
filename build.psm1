@@ -504,7 +504,7 @@ Fix steps:
         Output=$Output
         Runtime=$Runtime
         Configuration=$Configuration
-        Framework='net461'
+        Framework='net471'
         Verbose=$true
         SMAOnly=[bool]$SMAOnly
         PSModuleRestore=$PSModuleRestore
@@ -728,7 +728,7 @@ function New-PSOptions {
         [ValidateSet("Debug", "Release", "CodeCoverage", '')]
         [string]$Configuration,
 
-        [ValidateSet("netcoreapp2.1", "net461")]
+        [ValidateSet("netcoreapp2.1", "net471")]
         [string]$Framework = "netcoreapp2.1",
 
         # These are duplicated from Start-PSBuild

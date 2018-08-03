@@ -1895,21 +1895,21 @@ namespace Microsoft.PowerShell.Commands
             else if (requestedDotNetFrameworkVersion != null)
             {
                 bool higherThanKnownHighestVersion = false;
-                if (
-                    !Utils.IsNetFrameworkVersionSupported(requestedDotNetFrameworkVersion,
-                        out higherThanKnownHighestVersion))
+                if (false)
+                    //!Utils.IsNetFrameworkVersionSupported(requestedDotNetFrameworkVersion,
+                    //    out higherThanKnownHighestVersion))
                 {
-                    containedErrors = true;
-                    if (writingErrors)
-                    {
-                        message = StringUtil.Format(Modules.InvalidDotNetFrameworkVersion,
-                            moduleManifestPath, requestedDotNetFrameworkVersion);
-                        InvalidOperationException ioe = new InvalidOperationException(message);
-                        ErrorRecord er = new ErrorRecord(ioe, "Modules_InsufficientDotNetFrameworkVersion",
-                            ErrorCategory.ResourceUnavailable, moduleManifestPath);
-                        WriteError(er);
-                    }
-                    if (bailOnFirstError) return null;
+                    //containedErrors = true;
+                    //if (writingErrors)
+                    //{
+                    //    message = StringUtil.Format(Modules.InvalidDotNetFrameworkVersion,
+                    //        moduleManifestPath, requestedDotNetFrameworkVersion);
+                    //    InvalidOperationException ioe = new InvalidOperationException(message);
+                    //    ErrorRecord er = new ErrorRecord(ioe, "Modules_InsufficientDotNetFrameworkVersion",
+                    //        ErrorCategory.ResourceUnavailable, moduleManifestPath);
+                    //    WriteError(er);
+                    //}
+                    //if (bailOnFirstError) return null;
                 }
                 else if (higherThanKnownHighestVersion)
                 {
@@ -2404,7 +2404,7 @@ namespace Microsoft.PowerShell.Commands
                         Modules.PSEditionNotSupported,
                         moduleManifestPath,
                         PSVersionInfo.PSEdition,
-                        String.Join(',', inferredCompatiblePSEditions));
+                        String.Join(",", inferredCompatiblePSEditions));
 
                     InvalidOperationException ioe = new InvalidOperationException(message);
 
@@ -5983,8 +5983,6 @@ namespace Microsoft.PowerShell.Commands
             bool isModuleLoad = (bool)AppDomain.CurrentDomain.GetData("IsModuleLoad");
             Dictionary<string, SessionStateCmdletEntry> cmdlets = null;
             Dictionary<string, List<SessionStateAliasEntry>> aliases = null;
-            Dictionary<string, SessionStateProviderEntry> providers = null;
-            string throwAwayHelpFile = null;
             Version assemblyVersion = new Version("0.0.0.0");
 
             try
@@ -6014,10 +6012,10 @@ namespace Microsoft.PowerShell.Commands
                 {
                 }
 
-                if (assembly != null)
-                {
-                    PSSnapInHelpers.AnalyzePSSnapInAssembly(assembly, assembly.Location, null, null, isModuleLoad, out cmdlets, out aliases, out providers, out throwAwayHelpFile);
-                }
+                //if (assembly != null)
+                //{
+                //    PSSnapInHelpers.AnalyzePSSnapInAssembly(assembly, assembly.Location, null, null, isModuleLoad, out cmdlets, out aliases, out providers, out throwAwayHelpFile);
+                //}
             }
             // Catch-all OK, analyzing user code.
             catch (Exception)

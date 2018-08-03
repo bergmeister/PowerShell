@@ -644,7 +644,7 @@ namespace System.Management.Automation
 
         private static bool TryParseVersion(string version, ref VersionResult result)
         {
-            if (version.EndsWith('-') || version.EndsWith('+') || version.EndsWith('.'))
+            if (version.EndsWith("-") || version.EndsWith("+") || version.EndsWith("."))
             {
                 result.SetFailure(ParseFailureKind.FormatException);
                 return false;

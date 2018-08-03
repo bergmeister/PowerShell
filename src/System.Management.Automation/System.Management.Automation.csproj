@@ -4,12 +4,13 @@
     <Description>PowerShell Core's System.Management.Automation project</Description>
     <NoWarn>$(NoWarn);CS1570;CS1734</NoWarn>
     <AssemblyName>System.Management.Automation</AssemblyName>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- <ProjectReference Include="..\Microsoft.PowerShell.CoreCLR.Eventing\Microsoft.PowerShell.CoreCLR.Eventing.csproj" /> -->
     <!-- the following package(s) are from https://github.com/JamesNK/Newtonsoft.Json -->
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <!-- the following package(s) are from https://github.com/dotnet/corefx -->
     <PackageReference Include="Microsoft.Win32.Registry.AccessControl" Version="4.5.0" />
@@ -37,7 +38,7 @@
 
   <ItemGroup>
     <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.objectModel.autogen.cs" />
-    <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.xmlSerializer.autogen.cs" />
+    <!-- <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.xmlSerializer.autogen.cs" /> -->
     <Compile Remove="engine\CodeMethods.cs" />
     <Compile Remove="engine\ComInterop\ArgBuilder.cs" />
     <Compile Remove="engine\ComInterop\BoolArgBuilder.cs" />
@@ -108,7 +109,7 @@
     <Compile Remove="engine\TransactionManager.cs" />
     <Compile Remove="engine\hostifaces\NativeCultureResolver.cs" />
     <Compile Remove="engine\hostifaces\RunspaceInvoke.cs" />
-    <Compile Remove="logging\eventlog\EventLogLogProvider.cs" />
+    <!-- <Compile Remove="logging\eventlog\EventLogLogProvider.cs" /> -->
     <Compile Remove="namespaces\SafeTransactionHandle.cs" />
     <Compile Remove="namespaces\SafeRegistryHandle.cs" />
     <Compile Remove="namespaces\TransactedRegistry.cs" />

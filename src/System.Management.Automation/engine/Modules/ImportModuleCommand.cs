@@ -640,7 +640,7 @@ namespace Microsoft.PowerShell.Commands
                         else if (Directory.Exists(rootedPath))
                         {
                             // If the path ends with a directory separator, remove it
-                            if (rootedPath.EndsWith(Path.DirectorySeparatorChar))
+                            if (rootedPath.EndsWith($"{Path.DirectorySeparatorChar}"))
                             {
                                 rootedPath = Path.GetDirectoryName(rootedPath);
                             }

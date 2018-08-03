@@ -170,14 +170,14 @@ namespace System.Management.Automation.Runspaces
             yield return td17;
 
 #if !CORECLR
-            var td18 = new TypeData(@"System.DirectoryServices.DirectoryEntry", true);
-            td18.Members.Add("ConvertLargeIntegerToInt64",
-                new CodeMethodData("ConvertLargeIntegerToInt64", GetMethodInfo(typeof(Microsoft.PowerShell.AdapterCodeMethods), @"ConvertLargeIntegerToInt64")));
-            td18.Members.Add("ConvertDNWithBinaryToString",
-                new CodeMethodData("ConvertDNWithBinaryToString", GetMethodInfo(typeof(Microsoft.PowerShell.AdapterCodeMethods), @"ConvertDNWithBinaryToString")));
-            td18.DefaultDisplayPropertySet =
-                new PropertySetData(new [] { "distinguishedName", "Path" }) { Name = "DefaultDisplayPropertySet" };
-            yield return td18;
+            //var td18 = new TypeData(@"System.DirectoryServices.DirectoryEntry", true);
+            //td18.Members.Add("ConvertLargeIntegerToInt64",
+            //    new CodeMethodData("ConvertLargeIntegerToInt64", GetMethodInfo(typeof(Microsoft.PowerShell.AdapterCodeMethods), @"ConvertLargeIntegerToInt64")));
+            //td18.Members.Add("ConvertDNWithBinaryToString",
+            //    new CodeMethodData("ConvertDNWithBinaryToString", GetMethodInfo(typeof(Microsoft.PowerShell.AdapterCodeMethods), @"ConvertDNWithBinaryToString")));
+            //td18.DefaultDisplayPropertySet =
+            //    new PropertySetData(new [] { "distinguishedName", "Path" }) { Name = "DefaultDisplayPropertySet" };
+            //yield return td18;
 #endif // !CORECLR
 
             var td19 = new TypeData(@"System.IO.DirectoryInfo", true);

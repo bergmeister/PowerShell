@@ -34,10 +34,12 @@ namespace System.Management.Automation
         /// </summary>
         static ClrFacade()
         {
+#if CORECLR
             if (PowerShellAssemblyLoadContext.Instance == null)
             {
                 PowerShellAssemblyLoadContext.InitializeSingleton(string.Empty);
             }
+#endif
         }
 
         #region Assembly
@@ -57,7 +59,7 @@ namespace System.Management.Automation
         /// </param>
         internal static IEnumerable<Assembly> GetAssemblies(string namespaceQualifiedTypeName = null)
         {
-            return PSAssemblyLoadContext.GetAssembly(namespaceQualifiedTypeName) ??
+            return //PSAssemblyLoadContext.GetAssembly(namespaceQualifiedTypeName) ??
                    AppDomain.CurrentDomain.GetAssemblies().Where(a =>
                        !TypeDefiner.DynamicClassAssemblyName.Equals(a.GetName().Name, StringComparison.Ordinal));
         }
@@ -66,15 +68,15 @@ namespace System.Management.Automation
         /// Get the namespace-qualified type names of all available .NET Core types shipped with PowerShell Core.
         /// This is used for type name auto-completion in PS engine.
         /// </summary>
-        internal static IEnumerable<string> AvailableDotNetTypeNames => PSAssemblyLoadContext.AvailableDotNetTypeNames;
+        internal static IEnumerable<string> AvailableDotNetTypeNames => AppDomain.CurrentDomain.GetAssemblies().Select(x => x.FullName); // TODO fix code
 
         /// <summary>
         /// Get the assembly names of all available .NET Core assemblies shipped with PowerShell Core.
         /// This is used for type name auto-completion in PS engine.
         /// </summary>
-        internal static HashSet<string> AvailableDotNetAssemblyNames => PSAssemblyLoadContext.AvailableDotNetAssemblyNames;
+        internal static HashSet<string> AvailableDotNetAssemblyNames => new HashSet<string>(AppDomain.CurrentDomain.GetAssemblies().Select(x => x.FullName));
 
-        private static PowerShellAssemblyLoadContext PSAssemblyLoadContext => PowerShellAssemblyLoadContext.Instance;
+        //private static PowerShellAssemblyLoadContext PSAssemblyLoadContext => PowerShellAssemblyLoadContext.Instance;
 
         #endregion Assembly
 
@@ -126,10 +128,10 @@ namespace System.Management.Automation
             }
         }
 
-        #endregion Encoding
+#endregion Encoding
 
 #if !UNIX
-        #region Security
+#region Security
 
         /// <summary>
         /// Facade to get the SecurityZone information of a file.
@@ -279,10 +281,10 @@ namespace System.Management.Automation
             return SecurityZone.NoZone;
         }
 
-        #endregion Security
+#endregion Security
 #endif
 
-        #region Misc
+#region Misc
 
         /// <summary>
         /// Facade for RemotingServices.IsTransparentProxy(object)
@@ -370,7 +372,7 @@ namespace System.Management.Automation
         /// <param name="directoryPath">The full path to the folder where profile files are stored for the current application domain.</param>
         internal static void SetProfileOptimizationRoot(string directoryPath)
         {
-            PSAssemblyLoadContext.SetProfileOptimizationRootImpl(directoryPath);
+            //PSAssemblyLoadContext.SetProfileOptimizationRootImpl(directoryPath);
         }
 
         /// <summary>
@@ -379,10 +381,10 @@ namespace System.Management.Automation
         /// <param name="profile">The file name of the profile to use.</param>
         internal static void StartProfileOptimization(string profile)
         {
-            PSAssemblyLoadContext.StartProfileOptimizationImpl(profile);
+            //PSAssemblyLoadContext.StartProfileOptimizationImpl(profile);
         }
 
-        #endregion Misc
+#endregion Misc
 
         /// <summary>
         /// Native methods that are used by facade methods
