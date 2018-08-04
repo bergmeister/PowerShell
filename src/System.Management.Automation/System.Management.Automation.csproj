@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.objectModel.autogen.cs" />
     <!-- <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.xmlSerializer.autogen.cs" /> -->
+    <!-- <Compile Remove="CoreCLR\*" /> -->
     <Compile Remove="engine\CodeMethods.cs" />
     <Compile Remove="engine\ComInterop\ArgBuilder.cs" />
     <Compile Remove="engine\ComInterop\BoolArgBuilder.cs" />
@@ -106,7 +107,7 @@
     <Compile Remove="engine\PSMI\Serialization\MITypeSerializationInfo.cs" />
     <Compile Remove="engine\PSMI\Serialization\PSMISerializer.cs" />
     <Compile Remove="engine\TransactedString.cs" />
-    <Compile Remove="engine\TransactionManager.cs" />
+    <!-- <Compile Remove="engine\TransactionManager.cs" /> -->
     <Compile Remove="engine\hostifaces\NativeCultureResolver.cs" />
     <Compile Remove="engine\hostifaces\RunspaceInvoke.cs" />
     <!-- <Compile Remove="logging\eventlog\EventLogLogProvider.cs" /> -->

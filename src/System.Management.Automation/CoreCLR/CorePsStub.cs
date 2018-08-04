@@ -99,6 +99,7 @@ namespace System.Management.Automation
 {
     #region PSTransaction
 
+#if CORECLR
     /// <summary>
     /// We don't need PSTransaction related types on CSS because System.Transactions
     /// namespace is not available in CoreCLR
@@ -130,10 +131,11 @@ namespace System.Management.Automation
         /// </summary>
         Never
     }
+#endif
 
-    #endregion PSTransaction
+#endregion PSTransaction
 
-    #region ApartmentState
+#region ApartmentState
 
 #if CORECLR
     internal enum ApartmentState
@@ -154,11 +156,12 @@ namespace System.Management.Automation
 
 #endif
 
-    #endregion ApartmentState
+#endregion ApartmentState
 }
 
 namespace System.Management.Automation.Internal
 {
+#if CORECLR
     /// <summary>
     /// We don't need PSTransaction related types on CSS because System.Transactions
     /// namespace is not available in CoreCLR
@@ -234,6 +237,7 @@ namespace System.Management.Automation.Internal
 
         public void Dispose() { }
     }
+#endif
 }
 
 namespace System.Management.Automation.ComInterop
@@ -488,7 +492,7 @@ namespace Microsoft.PowerShell.Commands.Internal
     using System.Security.AccessControl;
     using System.Security.Principal;
 
-    #region TransactedRegistryKey
+#region TransactedRegistryKey
 
     internal abstract class TransactedRegistryKey : IDisposable
     {
@@ -623,7 +627,7 @@ namespace Microsoft.PowerShell.Commands.Internal
         }
     }
 
-    #endregion TransactedRegistryKey
+#endregion TransactedRegistryKey
 }
 
 #endregion PS_STUBS
@@ -653,7 +657,7 @@ namespace System.Management.Automation
 {
     using Microsoft.Win32;
 
-    #region RegistryStringResourceIndirect
+#region RegistryStringResourceIndirect
 
     internal sealed class RegistryStringResourceIndirect : IDisposable
     {
@@ -688,7 +692,7 @@ namespace System.Management.Automation
         }
     }
 
-    #endregion
+#endregion
 }
 
 #if UNIX
@@ -749,13 +753,11 @@ namespace System.Management.Automation.Tracing
     using System.Management.Automation.Internal;
 
     /// <summary>
-    ///
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
     public abstract class EtwActivity
     {
         /// <summary>
-        ///
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
@@ -765,7 +767,6 @@ namespace System.Management.Automation.Tracing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <returns></returns>
         public static Guid CreateActivityId()
@@ -774,7 +775,6 @@ namespace System.Management.Automation.Tracing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <returns></returns>
         public static Guid GetActivityId()
@@ -869,17 +869,14 @@ namespace System.Management.Automation.Tracing
         ManagedPlugIn = 0x100,
 
         /// <summary>
-        ///
         /// </summary>
         UseAlwaysDebug = 0x2000000000000000,
 
         /// <summary>
-        ///
         /// </summary>
         UseAlwaysOperational = 0x8000000000000000,
 
         /// <summary>
-        ///
         /// </summary>
         UseAlwaysAnalytic = 0x4000000000000000,
     }
@@ -957,7 +954,6 @@ namespace System.Management.Automation.Tracing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="message1"></param>
         /// <param name="message2"></param>
@@ -968,7 +964,6 @@ namespace System.Management.Automation.Tracing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="message"></param>
         /// <param name="instanceId"></param>
@@ -979,7 +974,6 @@ namespace System.Management.Automation.Tracing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="className"></param>
         /// <param name="methodName"></param>
@@ -993,7 +987,6 @@ namespace System.Management.Automation.Tracing
         }
 
         /// <summary>
-        ///
         /// </summary>
         /// <param name="className"></param>
         /// <param name="methodName"></param>

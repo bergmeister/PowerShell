@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Dbg = System.Management.Automation.Diagnostics;
+using System.Globalization;
 
 namespace System.Management.Automation
 {
@@ -948,7 +949,19 @@ namespace System.Management.Automation
 #if !UNIX
                 // If on Windows, we want to add the System32 Windows PowerShell module directory
                 // so that Windows modules are discoverable
-                newModulePathString += Path.PathSeparator + GetWindowsPowerShellPSHomeModulePath();
+                string windowsPowerShellModulePath = GetWindowsPowerShellPSHomeModulePath();
+#if CORECLR
+                var newModulePathStringDoesNotContainWindowsPowerShellModulePath = !newModulePathString.Contains(windowsPowerShellModulePath, StringComparison.OrdinalIgnoreCase)
+#else
+                var newModulePathStringDoesNotContainWindowsPowerShellModulePath = CultureInfo.InvariantCulture.CompareInfo.IndexOf(newModulePathString, windowsPowerShellModulePath, CompareOptions.OrdinalIgnoreCase) < 0;
+#endif
+                if (newModulePathStringDoesNotContainWindowsPowerShellModulePath)
+                {
+
+                    newModulePathString += Path.PathSeparator + windowsPowerShellModulePath;
+                }
+
+
 #endif
 
                 // Set the environment variable...
