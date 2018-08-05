@@ -185,7 +185,7 @@ namespace System.Management.Automation
         internal static bool IsModuleFeatureName(string featureName, string moduleName = null)
         {
             // Feature names cannot start with a dot
-            if (featureName.StartsWith("."))
+            if (featureName.StartsWith('.'))
             {
                 return false;
             }

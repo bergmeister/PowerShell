@@ -100,12 +100,7 @@ namespace Microsoft.PowerShell.Commands
                 {
                     foreach (var feature in ModuleIntrinsics.GetExperimentalFeature(moduleFile))
                     {
-#if CORECLR
                         featuresFromGivenModules.TryAdd(feature.Name, feature);
-#else
-                        try { featuresFromGivenModules.Add(feature.Name, feature); }
-                        catch (ArgumentException) { }
-#endif
                     }
                 }
 

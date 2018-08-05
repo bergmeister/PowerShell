@@ -186,12 +186,7 @@ namespace Microsoft.PowerShell.Commands
             foreach (DictionaryEntry entry in environmentTable)
             {
                 bool duplicateKey = false;
-#if CORECLR
-                duplicateKey = !providerTable.TryAdd((string)entry.Key, entry)
-#else
-                try { providerTable.Add((string)entry.Key, entry); }
-                catch (ArgumentException) { duplicateKey = true; }
-#endif
+                duplicateKey = !providerTable.TryAdd((string)entry.Key, entry);
 
                 if (duplicateKey)
                 {   // Windows only: duplicate key (variable name that differs only in case)
