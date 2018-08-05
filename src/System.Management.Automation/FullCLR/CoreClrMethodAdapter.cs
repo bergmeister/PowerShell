@@ -21,6 +21,17 @@ namespace System.Management.Automation
         {
             return _string.StartsWith(value.ToString());
         }
+
+        /// <summary>
+        /// Adapts String.StartsWith(char) method from CoreClr to FullClr.
+        /// </summary>
+        /// <param name="_string"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool EndsWith(this String _string, char value)
+        {
+            return _string.StartsWith(value.ToString());
+        }
     }
 
     /// <summary>
