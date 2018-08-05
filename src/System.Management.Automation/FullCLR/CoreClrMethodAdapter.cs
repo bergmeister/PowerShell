@@ -23,14 +23,14 @@ namespace System.Management.Automation
         }
 
         /// <summary>
-        /// Adapts String.StartsWith(char) method from CoreClr to FullClr.
+        /// Adapts String.EndsWith(char) method from CoreClr to FullClr.
         /// </summary>
         /// <param name="_string"></param>
         /// <param name="value"></param>
         /// <returns></returns>
         public static bool EndsWith(this String _string, char value)
         {
-            return _string.StartsWith(value.ToString());
+            return _string.EndsWith(value.ToString());
         }
     }
 
