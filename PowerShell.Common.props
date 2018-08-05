@@ -93,8 +93,8 @@
     <Company>Microsoft Corporation</Company>
     <Copyright>(c) Microsoft Corporation. All rights reserved.</Copyright>
 
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+    <!-- <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion> -->
     <LangVersion>Latest</LangVersion>
 
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

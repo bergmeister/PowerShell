@@ -26,7 +26,7 @@ namespace System.Management.Automation
     /// <summary>
     /// 
     /// </summary>
-    public static class DictionaryExtensionMethods
+    public static class DictionaryExtensions
     {
         /// <summary>
         /// Adapts IDictionary.TryAdd(TKey, TValue) method from CoreClr to FullClr.

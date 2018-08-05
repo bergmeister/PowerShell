@@ -46,7 +46,7 @@ namespace Microsoft.PowerShell.Cmdletization
             ScriptWriter.s_xmlReaderSettings.MaxCharactersFromEntities = 16384; // generous guess for the upper bound
             ScriptWriter.s_xmlReaderSettings.MaxCharactersInDocument = 128 * 1024 * 1024; // generous guess for the upper bound
 
-#if Xml_CmdletsOverObjectsXsdFileRestored // The XML Schema file 'cmdlets-over-objects.xsd' is missing in Github, and it's likely the resource string
+#if !Xml_CmdletsOverObjectsXsdFileRestored // The XML Schema file 'cmdlets-over-objects.xsd' is missing in Github, and it's likely the resource string
             //'CmdletizationCoreResources.Xml_cmdletsOverObjectsXsd' needs to be reworked to work in .NET Core.
             // https://github.com/PowerShell/PowerShell/issues/3680
             ScriptWriter.s_xmlReaderSettings.DtdProcessing = DtdProcessing.Ignore;
