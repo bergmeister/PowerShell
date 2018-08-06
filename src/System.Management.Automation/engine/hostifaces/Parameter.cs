@@ -233,27 +233,27 @@ namespace System.Management.Automation.Runspaces
         #region Win Blue Extensions
 
 #if !CORECLR // PSMI Not Supported On CSS
-        //internal CimInstance ToCimInstance()
-        //{
-        //    CimInstance c = InternalMISerializer.CreateCimInstance("PS_Parameter");
-        //    CimProperty nameProperty = InternalMISerializer.CreateCimProperty("Name", this.Name,
-        //                                                                        Microsoft.Management.Infrastructure.CimType.String);
-        //    c.CimInstanceProperties.Add(nameProperty);
-        //    Microsoft.Management.Infrastructure.CimType cimType = CimConverter.GetCimType(this.Value.GetType());
-        //    CimProperty valueProperty;
-        //    if (cimType == Microsoft.Management.Infrastructure.CimType.Unknown)
-        //    {
-        //        valueProperty = InternalMISerializer.CreateCimProperty("Value", (object)PSMISerializer.Serialize(this.Value),
-        //                                                                        Microsoft.Management.Infrastructure.CimType.Instance);
-        //    }
-        //    else
-        //    {
-        //        valueProperty = InternalMISerializer.CreateCimProperty("Value", this.Value, cimType);
-        //    }
+        internal CimInstance ToCimInstance()
+        {
+            CimInstance c = InternalMISerializer.CreateCimInstance("PS_Parameter");
+            CimProperty nameProperty = InternalMISerializer.CreateCimProperty("Name", this.Name,
+                                                                                Microsoft.Management.Infrastructure.CimType.String);
+            c.CimInstanceProperties.Add(nameProperty);
+            Microsoft.Management.Infrastructure.CimType cimType = CimConverter.GetCimType(this.Value.GetType());
+            CimProperty valueProperty;
+            if (cimType == Microsoft.Management.Infrastructure.CimType.Unknown)
+            {
+                valueProperty = InternalMISerializer.CreateCimProperty("Value", (object)PSMISerializer.Serialize(this.Value),
+                                                                                Microsoft.Management.Infrastructure.CimType.Instance);
+            }
+            else
+            {
+                valueProperty = InternalMISerializer.CreateCimProperty("Value", this.Value, cimType);
+            }
 
-        //    c.CimInstanceProperties.Add(valueProperty);
-        //    return c;
-        //}
+            c.CimInstanceProperties.Add(valueProperty);
+            return c;
+        }
 #endif
 
         #endregion Win Blue Extensions

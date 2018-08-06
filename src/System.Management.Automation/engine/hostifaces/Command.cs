@@ -712,37 +712,37 @@ namespace System.Management.Automation.Runspaces
         #region Win Blue Extensions
 
 #if !CORECLR // PSMI Not Supported On CSS
-        //internal CimInstance ToCimInstance()
-        //{
-        //    CimInstance c = InternalMISerializer.CreateCimInstance("PS_Command");
-        //    CimProperty commandTextProperty = InternalMISerializer.CreateCimProperty("CommandText",
-        //                                                                             this.CommandText,
-        //                                                                             Microsoft.Management.Infrastructure.CimType.String);
-        //    c.CimInstanceProperties.Add(commandTextProperty);
-        //    CimProperty isScriptProperty = InternalMISerializer.CreateCimProperty("IsScript",
-        //                                                                          this.IsScript,
-        //                                                                          Microsoft.Management.Infrastructure.CimType.Boolean);
-        //    c.CimInstanceProperties.Add(isScriptProperty);
+        internal CimInstance ToCimInstance()
+        {
+            CimInstance c = InternalMISerializer.CreateCimInstance("PS_Command");
+            CimProperty commandTextProperty = InternalMISerializer.CreateCimProperty("CommandText",
+                                                                                     this.CommandText,
+                                                                                     Microsoft.Management.Infrastructure.CimType.String);
+            c.CimInstanceProperties.Add(commandTextProperty);
+            CimProperty isScriptProperty = InternalMISerializer.CreateCimProperty("IsScript",
+                                                                                  this.IsScript,
+                                                                                  Microsoft.Management.Infrastructure.CimType.Boolean);
+            c.CimInstanceProperties.Add(isScriptProperty);
 
-        //    if (this.Parameters != null && this.Parameters.Count > 0)
-        //    {
-        //        List<CimInstance> parameterInstances = new List<CimInstance>();
-        //        foreach (var p in this.Parameters)
-        //        {
-        //            parameterInstances.Add(p.ToCimInstance());
-        //        }
+            if (this.Parameters != null && this.Parameters.Count > 0)
+            {
+                List<CimInstance> parameterInstances = new List<CimInstance>();
+                foreach (var p in this.Parameters)
+                {
+                    parameterInstances.Add(p.ToCimInstance());
+                }
 
-        //        if (parameterInstances.Count > 0)
-        //        {
-        //            CimProperty parametersProperty = InternalMISerializer.CreateCimProperty("Parameters",
-        //                                                                                    parameterInstances.ToArray(),
-        //                                                                                    Microsoft.Management.Infrastructure.CimType.ReferenceArray);
-        //            c.CimInstanceProperties.Add(parametersProperty);
-        //        }
-        //    }
+                if (parameterInstances.Count > 0)
+                {
+                    CimProperty parametersProperty = InternalMISerializer.CreateCimProperty("Parameters",
+                                                                                            parameterInstances.ToArray(),
+                                                                                            Microsoft.Management.Infrastructure.CimType.ReferenceArray);
+                    c.CimInstanceProperties.Add(parametersProperty);
+                }
+            }
 
-        //    return c;
-        //}
+            return c;
+        }
 #endif
 
         #endregion Win Blue Extensions
