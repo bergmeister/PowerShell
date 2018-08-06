@@ -32,13 +32,7 @@ namespace System.Management.Automation
         {
             return _string.EndsWith(value.ToString());
         }
-    }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public static class DictionaryExtensions
-    {
         /// <summary>
         /// Adapts IDictionary.TryAdd(TKey, TValue) method from CoreClr to FullClr.
         /// </summary>

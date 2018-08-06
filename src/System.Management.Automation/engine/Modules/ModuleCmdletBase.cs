@@ -2401,7 +2401,12 @@ namespace Microsoft.PowerShell.Commands
                         Modules.PSEditionNotSupported,
                         moduleManifestPath,
                         PSVersionInfo.PSEdition,
-                        String.Join(",", inferredCompatiblePSEditions));
+#if CORECLR
+                        String.Join(',', inferredCompatiblePSEditions)
+#else
+                        String.Join(",", inferredCompatiblePSEditions)
+#endif
+                        );
 
                     InvalidOperationException ioe = new InvalidOperationException(message);
 
@@ -6006,10 +6011,10 @@ namespace Microsoft.PowerShell.Commands
                 {
                 }
 
-                //if (assembly != null)
-                //{
-                //    PSSnapInHelpers.AnalyzePSSnapInAssembly(assembly, assembly.Location, null, null, isModuleLoad, out cmdlets, out aliases, out providers, out throwAwayHelpFile);
-                //}
+                if (assembly != null)
+                {
+                    PSSnapInHelpers.AnalyzePSSnapInAssembly(assembly, assembly.Location, null, null, out cmdlets, out aliases, out Dictionary<string, SessionStateProviderEntry> providers, out string throwAwayHelpFile);
+                }
             }
             // Catch-all OK, analyzing user code.
             catch (Exception)
@@ -7326,5 +7331,5 @@ namespace Microsoft.PowerShell.Commands
         internal List<Tuple<string, string>> DetectedAliases { get; set; }
     }
 
-    #endregion ModuleCmdletBase
+#endregion ModuleCmdletBase
 } // Microsoft.PowerShell.Commands
