@@ -428,7 +428,7 @@ function Start-PSBuild {
                      "win7-x86")]
         [string]$Runtime,
 
-        [ValidateSet("'netcoreapp2.1", "lnet472")]
+        [ValidateSet("'netcoreapp2.1", "net472")]
         [string]$Framework = 'netcoreapp2.1',
 
         [ValidateSet('Debug', 'Release', 'CodeCoverage', '')] # We might need "Checked" as well
@@ -782,6 +782,9 @@ function New-PSOptions {
     $Top = [IO.Path]::Combine($PSScriptRoot, "src", $PowerShellDir)
     Write-Verbose "Top project directory is $Top"
 
+    if ($Framework -eq 'net472' -and -not $SMAOnly.IsPresent) {
+        Throw "Compilation for net472 is at the moment only supported for System.Management.Automation, please use the '-SMAOnly' switch"
+    }
     Write-Verbose "Using framework '$Framework'"
 
     if (-not $Runtime) {
