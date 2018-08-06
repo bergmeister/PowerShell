@@ -18,6 +18,7 @@
   
     <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
     <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.xmlSerializer.autogen.cs" />
+    <Compile Remove="engine\CodeMethods.cs" />
     <Compile Remove="engine\TransactionManager.cs" />
     <Compile Remove="logging\eventlog\EventLogLogProvider.cs" />
   </ItemGroup>
@@ -52,7 +53,6 @@
 
   <ItemGroup>
     <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.objectModel.autogen.cs" />
-    <Compile Remove="engine\CodeMethods.cs" />
     <Compile Remove="engine\ComInterop\ArgBuilder.cs" />
     <Compile Remove="engine\ComInterop\BoolArgBuilder.cs" />
     <Compile Remove="engine\ComInterop\BoundDispEvent.cs" />
