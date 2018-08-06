@@ -4,11 +4,25 @@
     <Description>PowerShell Core's System.Management.Automation project</Description>
     <NoWarn>$(NoWarn);CS1570;CS1734</NoWarn>
     <AssemblyName>System.Management.Automation</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;net472</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+    <DefineConstants>$(DefineConstants);CORECLR</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <ProjectReference Include="..\Microsoft.PowerShell.CoreCLR.Eventing\Microsoft.PowerShell.CoreCLR.Eventing.csproj" />
+  </ItemGroup>
+  
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
+    <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.xmlSerializer.autogen.cs" />
+    <Compile Remove="engine\TransactionManager.cs" />
+    <Compile Remove="logging\eventlog\EventLogLogProvider.cs" />
+  </ItemGroup>
+
   <ItemGroup>
-    <!-- <ProjectReference Include="..\Microsoft.PowerShell.CoreCLR.Eventing\Microsoft.PowerShell.CoreCLR.Eventing.csproj" /> -->
     <!-- the following package(s) are from https://github.com/JamesNK/Newtonsoft.Json -->
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -38,8 +52,6 @@
 
   <ItemGroup>
     <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.objectModel.autogen.cs" />
-    <!-- <Compile Remove="cimSupport\cmdletization\xml\cmdlets-over-objects.xmlSerializer.autogen.cs" /> -->
-    <!-- <Compile Remove="CoreCLR\*" /> -->
     <Compile Remove="engine\CodeMethods.cs" />
     <Compile Remove="engine\ComInterop\ArgBuilder.cs" />
     <Compile Remove="engine\ComInterop\BoolArgBuilder.cs" />
@@ -107,10 +119,8 @@
     <Compile Remove="engine\PSMI\Serialization\MITypeSerializationInfo.cs" />
     <Compile Remove="engine\PSMI\Serialization\PSMISerializer.cs" />
     <Compile Remove="engine\TransactedString.cs" />
-    <!-- <Compile Remove="engine\TransactionManager.cs" /> -->
     <Compile Remove="engine\hostifaces\NativeCultureResolver.cs" />
     <Compile Remove="engine\hostifaces\RunspaceInvoke.cs" />
-    <!-- <Compile Remove="logging\eventlog\EventLogLogProvider.cs" /> -->
     <Compile Remove="namespaces\SafeTransactionHandle.cs" />
     <Compile Remove="namespaces\SafeRegistryHandle.cs" />
     <Compile Remove="namespaces\TransactedRegistry.cs" />

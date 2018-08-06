@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\PowerShell.Common.props"/>
+  <Import Project="..\..\PowerShell.Common.CoreClr.props"/>
 
   <PropertyGroup>
     <Description>PowerShell top-level project with .NET CLI host</Description>

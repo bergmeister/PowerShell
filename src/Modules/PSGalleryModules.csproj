@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
 
-  <Import Project="..\..\PowerShell.Common.props" />
+  <Import Project="..\..\PowerShell.Common.CoreClr.props" />
 
   <ItemGroup>
     <PackageReference Include="PackageManagement" Version="1.1.7.0" />

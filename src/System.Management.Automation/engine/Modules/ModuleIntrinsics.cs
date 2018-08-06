@@ -951,7 +951,7 @@ namespace System.Management.Automation
                 // so that Windows modules are discoverable
                 string windowsPowerShellModulePath = GetWindowsPowerShellPSHomeModulePath();
 #if CORECLR
-                var newModulePathStringDoesNotContainWindowsPowerShellModulePath = !newModulePathString.Contains(windowsPowerShellModulePath, StringComparison.OrdinalIgnoreCase)
+                var newModulePathStringDoesNotContainWindowsPowerShellModulePath = !newModulePathString.Contains(windowsPowerShellModulePath, StringComparison.OrdinalIgnoreCase);
 #else
                 var newModulePathStringDoesNotContainWindowsPowerShellModulePath = CultureInfo.InvariantCulture.CompareInfo.IndexOf(newModulePathString, windowsPowerShellModulePath, CompareOptions.OrdinalIgnoreCase) < 0;
 #endif

@@ -9,9 +9,6 @@ using System.Collections.Generic;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
 using Dbg = System.Management.Automation.Diagnostics;
-#if CORECLR
-using ImTools;
-#endif
 
 //
 // Now define the set of commands for manipulating modules.

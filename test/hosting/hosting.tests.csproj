@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Test.Common.props"/>
+  <Import Project="../Test.Common.CoreClr.props"/>
 
   <PropertyGroup>
     <Description>PowerShell hosting SDK xUnit Tests</Description>

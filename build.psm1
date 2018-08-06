@@ -428,6 +428,9 @@ function Start-PSBuild {
                      "win7-x86")]
         [string]$Runtime,
 
+        [ValidateSet("'netcoreapp2.1", "lnet472")]
+        [string]$Framework = 'netcoreapp2.1',
+
         [ValidateSet('Debug', 'Release', 'CodeCoverage', '')] # We might need "Checked" as well
         [string]$Configuration,
 
@@ -503,8 +506,8 @@ Fix steps:
         CrossGen=$CrossGen
         Output=$Output
         Runtime=$Runtime
+        Framework=$Framework
         Configuration=$Configuration
-        Framework='net472'
         Verbose=$true
         SMAOnly=[bool]$SMAOnly
         PSModuleRestore=$PSModuleRestore

@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <Import Project="..\..\PowerShell.Common.props" />
+  <Import Project="..\..\PowerShell.Common.CoreClr.props" />
   <PropertyGroup>
     <Description>PowerShell Core's Microsoft.WSMan.Management project</Description>
     <AssemblyName>Microsoft.WSMan.Management</AssemblyName>
