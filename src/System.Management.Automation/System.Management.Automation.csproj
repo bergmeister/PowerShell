@@ -26,6 +26,12 @@
     <PackageReference Include="Microsoft.Management.Infrastructure" Version="1.0.0" />
     <PackageReference Include="Microsoft.PowerShell.Native" Version="6.1.0" />
   </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <PackageReference Include="System.Memory" Version="4.5.1" />
+    <PackageReference Include="System.Reflection.Metadata" Version="1.6.0" />
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+  </ItemGroup>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CORECLR</DefineConstants>
