@@ -231,6 +231,9 @@ function Start-PSBuild {
                      "win7-x86")]
         [string]$Runtime,
 
+        [ValidateSet("netcoreapp2.1", "net472")]
+        [string]$Framework = 'netcoreapp2.1',
+
         [ValidateSet('Debug', 'Release', 'CodeCoverage', '')] # We might need "Checked" as well
         [string]$Configuration,
 
@@ -310,6 +313,7 @@ Fix steps:
         CrossGen=$CrossGen
         Output=$Output
         Runtime=$Runtime
+        Framework=$Framework
         Configuration=$Configuration
         Verbose=$true
         SMAOnly=[bool]$SMAOnly
@@ -580,8 +584,8 @@ function New-PSOptions {
         [ValidateSet("Debug", "Release", "CodeCoverage", '')]
         [string]$Configuration,
 
-        [ValidateSet("netcoreapp2.1")]
-        [string]$Framework,
+        [ValidateSet("netcoreapp2.1", "net472")]
+        [string]$Framework = 'netcoreapp2.1',
 
         # These are duplicated from Start-PSBuild
         # We do not use ValidateScript since we want tab completion
@@ -632,10 +636,10 @@ function New-PSOptions {
     $Top = [IO.Path]::Combine($PSScriptRoot, "src", $PowerShellDir)
     Write-Verbose "Top project directory is $Top"
 
-    if (-not $Framework) {
-        $Framework = "netcoreapp2.1"
-        Write-Verbose "Using framework '$Framework'"
+    if ($Framework -eq 'net472' -and -not $SMAOnly.IsPresent) {
+        Throw "Compilation for net472 is at the moment only supported for System.Management.Automation, please use the '-SMAOnly' switch"
     }
+    Write-Verbose "Using framework '$Framework'"
 
     if (-not $Runtime) {
         if ($Environment.IsLinux) {

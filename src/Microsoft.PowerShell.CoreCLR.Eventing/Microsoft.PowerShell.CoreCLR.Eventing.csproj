@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <Import Project="..\..\PowerShell.Common.props" />
+  <Import Project="..\..\PowerShell.Common.FullClr.props" />
   <PropertyGroup>
     <Description>PowerShell Core's Microsoft.PowerShell.CoreCLR.Eventing project</Description>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
@@ -9,6 +9,11 @@
   <ItemGroup>
     <!-- the following package(s) are from https://github.com/dotnet/corefx -->
     <PackageReference Include="System.Security.Principal.Windows" Version="4.5.1" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <Compile Remove="DotNetCode\Eventing\*.cs" />
+    <Compile Remove="DotNetCode\Eventing\Reader\*.cs" />
   </ItemGroup>
 
 </Project>
