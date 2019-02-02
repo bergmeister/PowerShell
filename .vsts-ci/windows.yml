@@ -66,8 +66,9 @@ steps:
   - task: PowerShell@2
     inputs:
       targetType: inline
-      script: Import-Module .\tools\ci.psm1
-              Invoke-AppveyorInstall
+      script: |
+        Import-Module .\tools\ci.psm1
+        Invoke-AppveyorInstall
     displayName: Bootstrap
     condition: succeededOrFailed()
 
