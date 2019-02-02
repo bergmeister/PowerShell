@@ -47,10 +47,10 @@ resources:
 steps:
   - powershell: |
       Get-ChildItem -Path env:
-    inputs:
-      pwsh: true
     displayName: Capture environment
     condition: succeededOrFailed()
+    inputs:
+      pwsh: true
 
   - powershell:  Write-Host "##vso[build.updatebuildnumber]$env:BUILD_SOURCEBRANCHNAME-$env:BUILD_SOURCEVERSION-$((get-date).ToString("yyyyMMddhhmmss"))"
     displayName: Set Build Name for Non-PR
