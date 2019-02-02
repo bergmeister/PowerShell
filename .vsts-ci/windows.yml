@@ -46,7 +46,7 @@ resources:
 
 steps:
   - powershell: |
-      Get-ChildItem -Path env:
+     Get-ChildItem -Path env:
     pwsh: true
     displayName: Capture environment
     condition: succeededOrFailed()
