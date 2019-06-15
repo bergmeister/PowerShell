@@ -27,8 +27,11 @@ jobs:
     displayName: Bootstrap
     condition: succeededOrFailed()
 
-  - powershell: |
-      Import-Module .\tools\ci.psm1
-      New-CodeCoverageAndTestPackage
-      Invoke-CIFinish -NuGetKey $env:NUGET_KEY
+  - task: PowerShell@1
     displayName: Build and Test Package
+    inputs:
+      scriptType: inlineScript
+      arguments: '$(NUGET_KEY)'
+      inlineScript: |
+        Param($NuGetKey)
+        Invoke-CIFinish -NuGetKey $NuGetKey
