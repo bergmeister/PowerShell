@@ -30,5 +30,5 @@ jobs:
   - powershell: |
       Import-Module .\tools\ci.psm1
       New-CodeCoverageAndTestPackage
-      Invoke-CIFinish -NuGetKey $(NUGET_KEY)
+      Invoke-CIFinish -NuGetKey $env:NUGET_KEY
     displayName: Build and Test Package
