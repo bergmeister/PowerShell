@@ -2657,7 +2657,7 @@ function New-MSIPackage
         [Environment]::SetEnvironmentVariable("UpgradeCodeX86", '1d00683b-0f84-4db8-a64f-2f98ad42fe06', "Process")
         [Environment]::SetEnvironmentVariable("IconPath", 'assets\Powershell_black.ico', "Process")
         # The ApplicationProgramsMenuShortcut GUID should be changed when bumping the major version because the installation directory changes
-        [Environment]::SetEnvironmentVariable("ApplicationProgramsMenuShortcut", '6a69de6c-183d-4bf4-a40e-83007d6293bf', "Process")
+        [Environment]::SetEnvironmentVariable("ApplicationProgramsMenuShortcut", 'c73ef18e-3fbf-40c3-adf8-1f75a40495e4', "Process")
     }
     else
     {
@@ -2665,7 +2665,7 @@ function New-MSIPackage
         [Environment]::SetEnvironmentVariable("UpgradeCodeX64", '39243d76-adaf-42b1-94fb-16ecf83237c8', "Process")
         [Environment]::SetEnvironmentVariable("UpgradeCodeX86", '86abcfbd-1ccc-4a88-b8b2-0facfde29094', "Process")
         [Environment]::SetEnvironmentVariable("IconPath", 'assets\Powershell_av_colors.ico', "Process")
-        [Environment]::SetEnvironmentVariable("ApplicationProgramsMenuShortcut", 'ab727c4f-2311-474c-9ade-f2c6fd7f7322', "Process")
+        [Environment]::SetEnvironmentVariable("ApplicationProgramsMenuShortcut", '07a718c8-ee4a-4438-aca5-ea6b26a5a03e', "Process")
     }
     $fileArchitecture = 'amd64'
     $ProductProgFilesDir = "ProgramFiles64Folder"
