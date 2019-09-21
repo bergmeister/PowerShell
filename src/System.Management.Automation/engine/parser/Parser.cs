@@ -6082,7 +6082,7 @@ namespace System.Management.Automation.Language
                     case TokenKind.LCurly:
                     case TokenKind.AtAtCurly:
                         UngetToken(token);
-                        exprAst = PrimaryExpressionRule(withMemberAccess: true);
+                        exprAst = PrimaryExpressionRule(withMemberAccess: true, isCommandArgument: true);
                         Diagnostics.Assert(exprAst != null, "PrimaryExpressionRule should never return null");
                         break;
 
@@ -6958,7 +6958,7 @@ namespace System.Management.Automation.Language
             return expr;
         }
 
-        private ExpressionAst PrimaryExpressionRule(bool withMemberAccess)
+        private ExpressionAst PrimaryExpressionRule(bool withMemberAccess, bool isCommandArgument = false)
         {
             // G  primary-expression:
             // G      value
@@ -7012,7 +7012,7 @@ namespace System.Management.Automation.Language
 
                 case TokenKind.AtCurly:
                 case TokenKind.AtAtCurly:
-                    expr = HashExpressionRule(token, parsingSchemaElement: false);
+                    expr = HashExpressionRule(token, parsingSchemaElement: false, isCommandArgument: isCommandArgument);
                     break;
 
                 case TokenKind.LCurly:
@@ -7072,7 +7072,7 @@ namespace System.Management.Automation.Language
             return expr;
         }
 
-        private ExpressionAst HashExpressionRule(Token atCurlyToken, bool parsingSchemaElement)
+        private ExpressionAst HashExpressionRule(Token atCurlyToken, bool parsingSchemaElement, bool isCommandArgument = false)
         {
             // G  hash-literal-expression:
             // G      '@{'   new-lines:opt   hash-literal-body:opt   new-lines:opt   '}'
@@ -7090,7 +7090,7 @@ namespace System.Management.Automation.Language
             bool splatted = false;
             if (ExperimentalFeature.IsEnabled("PSGeneralizedSplatting"))
             {
-                if (atCurlyToken.Kind == TokenKind.AtAtCurly)
+                if (isCommandArgument && atCurlyToken.Kind == TokenKind.AtAtCurly)
                 {
                     NextToken(); // to skip the first '@' to allow the parsing of the hashtable
                     splatted = true;
