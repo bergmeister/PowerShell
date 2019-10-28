@@ -4626,6 +4626,7 @@ namespace System.Management.Automation.Language
                     {
                         if (c1 == '@')
                         {
+                            UngetChar();
                             return NewToken(TokenKind.At);
                         }
                     }
