@@ -4626,12 +4626,7 @@ namespace System.Management.Automation.Language
                     {
                         if (c1 == '@')
                         {
-                            var c2 = PeekChar();
-                            if (c2 == '{')
-                            {
-                                UngetChar();
-                                return NewToken(TokenKind.At);
-                            }
+                            return NewToken(TokenKind.At);
                         }
                     }
 
