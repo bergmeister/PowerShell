@@ -684,13 +684,10 @@ function Invoke-OpenCover
         $targetArgsUnelevated = $targetArgs + @("-excludeTag @('RequireAdminOnWindows')")
     }
 
-    $targetArgsElevated += @("-OutputFile $PesterLogElevated")
-    $targetArgsUnelevated += @("-OutputFile $PesterLogUnelevated")
-
     if(-not $SuppressQuiet)
     {
-        $targetArgsElevated += @("-Show None")
-        $targetArgsUnelevated += @("-Show None")
+        $targetArgsElevated += @('-Output None')
+        $targetArgsUnelevated += @('-Output None')
     }
 
     $cmdlineElevated = CreateOpenCoverCmdline -target $target -outputLog $OutputLog -targetArgs $targetArgsElevated

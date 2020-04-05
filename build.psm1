@@ -1133,17 +1133,12 @@ function Start-PSPester {
 
     $command += "Invoke-Pester "
 
-    $command += "-OutputFormat ${OutputFormat} -OutputFile ${OutputFile} "
+    $command += '-CI'
     if ($ExcludeTag -and ($ExcludeTag -ne "")) {
         $command += "-ExcludeTag @('" + (${ExcludeTag} -join "','") + "') "
     }
     if ($Tag) {
         $command += "-Tag @('" + (${Tag} -join "','") + "') "
-    }
-    # sometimes we need to eliminate Pester output, especially when we're
-    # doing a daily build as the log file is too large
-    if ( $Quiet ) {
-        $command += "-Quiet "
     }
     if ( $PassThru ) {
         $command += "-PassThru "
