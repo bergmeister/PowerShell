@@ -689,7 +689,7 @@ function Restore-PSPester
         [ValidateNotNullOrEmpty()]
         [string] $Destination = ([IO.Path]::Combine((Split-Path (Get-PSOptions -DefaultToNew).Output), "Modules"))
     )
-    Save-Module -Name Pester -Path $Destination -Repository PSGallery -RequiredVersion "4.8.0"
+    Save-Module -Name Pester -Path $Destination -Repository PSGallery -RequiredVersion '5.0.0-rc1' -AllowPrerelease
 }
 
 function Compress-TestContent {

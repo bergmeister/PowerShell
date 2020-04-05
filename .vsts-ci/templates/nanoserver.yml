@@ -34,7 +34,7 @@ jobs:
     continueOnError: true
 
   - pwsh: |
-      Install-module pester -Scope CurrentUser -Force
+      Install-module pester -AllowPrerelease -Scope CurrentUser -Force
     displayName: 'Install Pester'
     continueOnError: true
 

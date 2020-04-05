@@ -492,7 +492,7 @@ function Invoke-CIFinish
         $env:PSMsiX64Path = $artifacts | Where-Object { $_.EndsWith(".msi")}
 
         # Install the latest Pester and import it
-        Install-Module Pester -Force -SkipPublisherCheck
+        Install-Module Pester -AllowPrerelease -Force -SkipPublisherCheck
         Import-Module Pester -Force
 
         # start the packaging tests and get the results
