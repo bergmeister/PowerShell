@@ -1133,7 +1133,7 @@ function Start-PSPester {
 
     $command += "Invoke-Pester "
 
-    $command += '-CI'
+    $command += '-CI '
     if ($ExcludeTag -and ($ExcludeTag -ne "")) {
         $command += "-ExcludeTag @('" + (${ExcludeTag} -join "','") + "') "
     }
