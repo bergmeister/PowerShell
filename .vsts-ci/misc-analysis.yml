@@ -26,7 +26,7 @@ jobs:
   displayName: Markdown and Common Tests
 
   pool:
-    name: Hosted Ubuntu 1604
+    name: ubuntu-20.04
   steps:
   - powershell: |
       Get-ChildItem -Path env:

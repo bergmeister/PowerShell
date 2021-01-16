@@ -1,5 +1,5 @@
 parameters:
-  pool: 'Hosted VS2017'
+  pool: 'windows-latest'
   jobName: 'credscan'
   displayName: Secret Scan
 
