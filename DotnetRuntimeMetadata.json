@@ -2,7 +2,7 @@
   "sdk": {
     "channel": "release/5.0.1xx",
     "packageVersionPattern": "5.0.0",
-    "sdkImageVersion": "5.0.100",
+    "sdkImageVersion": "5.0.102",
     "nextChannel": "net5/rc2"
   }
 }
