@@ -32,8 +32,7 @@ jobs:
     displayName: 'Capture Artifacts Directory'
     continueOnError: true
 
-  # must be run frow Windows PowerShell
-  - powershell: |
+  - pwsh: |
       Import-Module .\tools\ci.psm1
       Invoke-CIInstall
     displayName: Bootstrap

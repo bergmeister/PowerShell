@@ -97,8 +97,7 @@ stages:
       displayName: 'Download CAP package'
       condition: succeededOrFailed()
 
-    # must be run frow Windows PowerShell
-    - powershell: |
+    - pwsh: |
         Import-Module .\tools\ci.psm1
         Invoke-CIInstall
       displayName: Bootstrap
